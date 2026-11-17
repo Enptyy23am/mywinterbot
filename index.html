@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>@Empty23AM — Зимний бот</title>
+    <script src="https://telegram.org"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        body {
+            background: radial-gradient(circle at top, #1b2735 0%, #090a0f 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        canvas#snow {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            padding: 28px 22px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            z-index: 2;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease;
+        }
+        .shake { animation: shakeAnim 0.35s ease; }
+        @keyframes shakeAnim {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px) rotate(-1deg); }
+            75% { transform: translateX(8px) rotate(1deg); }
+        }
+        .avatar {
+            width: 84px; height: 84px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #74ebd5 0%, #9face6 100%);
+            margin: 0 auto 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 38px;
+            box-shadow: 0 0 20px rgba(116, 235, 213, 0.3);
+        }
+        h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px; }
+        .subtitle { font-size: 14px; color: #a0aec0; margin-bottom: 20px; line-height: 1.4; }
+        .timer-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .timer-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #81e6d9; margin-bottom: 4px; }
+        .timer-val { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+            margin-bottom: 10px;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-snow {
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            color: #0f172a;
+            box-shadow: 0 4px 15px rgba(142, 197, 252, 0.35);
+        }
+        .btn-chat {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        .result {
+            margin-top: 12px;
+            font-size: 14px;
+            min-height: 20px;
+            color: #90cdf4;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="snow"></canvas>
+
+<div class="card" id="mainCard">
+    <div class="avatar">🐈‍⬛</div>
+    <h1>@Empty23AM</h1>
+    <p class="subtitle">Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
+
+    <div class="timer-box">
+        <div class="timer-title">⏳ До Нового года</div>
+        <div class="timer-val" id="countdown">Загрузка...</div>
+    </div>
+
+    <button class="btn btn-snow" onclick="throwSnowball()">❄️ Бросить снежок</button>
+    <button class="btn btn-chat" onclick="closeApp()">✉️ Написать сообщение</button>
+    <div class="result" id="resultText"></div>
+</div>
+
+<script>
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+
+    function updateTimer() {
+        const now = new Date();
+        const nextYear = new Date(now.getFullYear() + 1, 0, 1);
+        const diff = nextYear - now;
+        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const m = Math.floor((diff / 1000 / 60) % 60);
+        const s = Math.floor((diff / 1000) % 60);
+        document.getElementById('countdown').innerText = `${d}д ${h}ч ${m}м ${s}с`;
+    }
+    setInterval(updateTimer, 1000);
+    updateTimer();
+
+    let hits = 0;
+    function throwSnowball() {
+        const card = document.getElementById('mainCard');
+        const res = document.getElementById('resultText');
+
+        card.classList.remove('shake');
+        void card.offsetWidth;
+        card.classList.add('shake');
+
+        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+
+        const isHit = Math.random() < 0.5;
+        if (isHit) {
+            hits++;
+            res.innerText = `☃️ Прямое попадание! Попаданий: ${hits}`;
+        } else {
+            res.innerText = `❄️ Промах! Снежок улетел в сугроб (Попаданий: ${hits})`;
+        }
+    }
+
+    function closeApp() {
+        tg.close();
+    }
+
+    const canvas = document.getElementById('snow');
+    const ctx = canvas.getContext('2d');
+    let w = canvas.width = window.innerWidth;
+    let h = canvas.height = window.innerHeight;
+    const flakes = Array.from({length: 60}, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 3 + 1,
+        d: Math.random() * 1 + 0.5
+    }));
+
+    function drawSnow() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
+        ctx.beginPath();
+        for (let f of flakes) {
+            ctx.moveTo(f.x, f.y);
+            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        }
+        ctx.fill();
+        for (let f of flakes) {
+            f.y += f.d;
+            f.x += Math.sin(f.y * 0.01) * 0.5;
+            if (f.y > h) { f.y = -5; f.x = Math.random() * w; }
+        }
+        requestAnimationFrame(drawSnow);
+    }
+    drawSnow();
+</script>
+</body>
+</html>
