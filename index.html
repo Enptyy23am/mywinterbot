@@ -123,6 +123,8 @@ function roll(){
 <button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'⛄️ Промах! В сугроб ('+k+')'">⛄️ Бросить снежок</button>
 <button class="btn b2" onclick="go('v4')">🎮 Мини-игра</button>
 <button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
+<div class="res" id="r"></div>
+</div>
 <div id="v4" style="display:none">
 <div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div>
 <p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p>
