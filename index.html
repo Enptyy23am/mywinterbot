@@ -41,8 +41,7 @@ p{font-size:14px;color:#334155;margin-bottom:18px;line-height:1.4}
 const tg=window.Telegram.WebApp;tg.ready();tg.expand();
 function upd(){
 const n=new Date(),ny=new Date(n.getFullYear()+1,0,1),df=ny-n;
-const d=Math.floor(df/864e5),h=Math.floor(df/36e5%24),m=Math.floor(df/6e4%60),s=Math.floor(df/1e3%60);
-document.getElementById('cd').innerText=`${d}д ${h}ч ${m}м ${s}с`;
+document.getElementById('cd').innerText=Math.floor(df/864e5)+'д '+Math.floor(df/36e5%24)+'ч '+Math.floor(df/6e4%60)+'м '+Math.floor(df/1e3%60)+'с';
 }
 setInterval(upd,1000);upd();
 let k=0;
@@ -50,16 +49,20 @@ function hit(){
 const c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');
 if(tg.HapticFeedback)tg.HapticFeedback.impactOccurred('medium');
 const ok=Math.random()<.5;if(ok)k++;
-document.getElementById('r').innerText=ok?`☃️ Прямое попадание! Попаданий: ${k}`:`❄️ Промах! Снежок улетел в сугроб (${k})`;
+document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'❄️ Промах! В сугроб ('+k+')';
 }
 const cv=document.getElementById('s'),cx=cv.getContext('2d');
-let w=cv.width=innerWidth,h=cv.height=innerHeight;
-const fl=Array.from({length:75},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*3+1.5,d:Math.random()+.5}));
+let w=cv.width=window.innerWidth,h=cv.height=window.innerHeight;
+const fl=Array.from({length:90},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*4+2,d:Math.random()*1.5+0.8}));
 function dr(){
-cx.clearRect(0,0,w,h);cx.fillStyle="rgba(255,255,255,.85)";cx.beginPath();
+cx.clearRect(0,0,w,h);
+cx.fillStyle="#ffffff";
+cx.shadowColor="#38bdf8";
+cx.shadowBlur=6;
+cx.beginPath();
 for(let f of fl){cx.moveTo(f.x,f.y);cx.arc(f.x,f.y,f.r,0,6.28);}
 cx.fill();
-for(let f of fl){f.y+=f.d;f.x+=Math.sin(f.y*.01)*.6;if(f.y>h){f.y=-5;f.x=Math.random()*w;}}
+for(let f of fl){f.y+=f.d;f.x+=Math.sin(f.y*.01)*.8;if(f.y>h){f.y=-5;f.x=Math.random()*w;}}
 requestAnimationFrame(dr);
 }
 dr();
