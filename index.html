@@ -8,12 +8,15 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
 body{background:#1c1917 url('83059cadf5a9f1190c93dee7fc6f2dbe.jpg') center/cover no-repeat;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{background:rgba(255,250,240,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(253,230,138,.8);border-radius:26px;padding:28px 22px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 45px rgba(28,25,23,.45)}
+.card{background:rgba(255,250,240,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(253,230,138,.8);border-radius:26px;padding:28px 22px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 45px rgba(28,25,23,.45)}
 .shake{animation:sh .35s ease}
 @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-.ava{width:90px;height:90px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:3px solid #fef3c7;box-shadow:0 8px 20px rgba(180,83,9,.2)}
+.top{position:relative;width:230px;height:105px;margin:0 auto 10px;display:flex;align-items:center;justify-content:center}
+.ava{width:92px;height:92px;border-radius:50%;overflow:hidden;border:3px solid #fde68a;box-shadow:0 8px 20px rgba(180,83,9,.2);z-index:2}
 .ava img{width:100%;height:100%;object-fit:cover;display:block}
-h1{font-size:22px;font-weight:700;color:#292524;margin-bottom:6px}
+.dec{position:absolute;color:#c99a62;pointer-events:none}
+.name{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px}
+h1{font-size:22px;font-weight:700;color:#292524}
 p{font-size:14px;color:#57534e;margin-bottom:18px;line-height:1.4}
 .tbox{background:rgba(254,243,199,.65);border:1px solid rgba(253,230,138,.7);border-radius:16px;padding:12px;margin-bottom:18px}
 .tt{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#b45309;font-weight:700;margin-bottom:4px}
@@ -26,11 +29,26 @@ p{font-size:14px;color:#57534e;margin-bottom:18px;line-height:1.4}
 </style>
 </head>
 <body onload="window.k=0;if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
+<svg style="display:none"><symbol id="sf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1M12 5l-2.5-2.5M12 5l2.5-2.5M12 19l-2.5 2.5M12 19l2.5 2.5M5 12l-2.5-2.5M5 12l-2.5 2.5M19 12l2.5-2.5M19 12l2.5 2.5"/></symbol><symbol id="st" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></symbol></svg>
 <div class="card" id="c">
+<div class="top">
+<svg class="dec" style="left:16px;top:16px;width:28px;height:28px"><use href="#sf"/></svg>
+<svg class="dec" style="left:44px;top:4px;width:13px;height:13px"><use href="#st"/></svg>
+<svg class="dec" style="left:10px;bottom:14px;width:13px;height:13px"><use href="#st"/></svg>
+<svg class="dec" style="left:36px;bottom:20px;width:15px;height:15px"><use href="#st"/></svg>
 <div class="ava"><img src="c2e141b3bc262e2364d393de592dc9b9.jpg"></div>
+<svg class="dec" style="right:42px;top:4px;width:14px;height:14px"><use href="#st"/></svg>
+<svg class="dec" style="right:10px;top:14px;width:34px;height:34px"><use href="#sf"/></svg>
+<svg class="dec" style="right:40px;bottom:22px;width:13px;height:13px"><use href="#st"/></svg>
+<svg class="dec" style="right:14px;bottom:8px;width:24px;height:24px"><use href="#sf"/></svg>
+</div>
+<div class="name">
+<svg style="width:22px;height:22px;color:#c99a62"><use href="#sf"/></svg>
 <h1>@Empty23AM</h1>
+<svg style="width:22px;height:22px;color:#c99a62"><use href="#sf"/></svg>
+</div>
 <p>Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
-<div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">43д 12ч 46м 00с</div></div>
+<div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">43д 12ч 00м 00с</div></div>
 <button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)window.k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+window.k+')':'⛄️ Промах! В сугроб ('+window.k+')'">⛄️ Бросить снежок</button>
 <button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
 <div class="res" id="r"></div>
