@@ -45,6 +45,7 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .gi .gt{position:absolute;bottom:0;inset-x:0;font-size:9px;font-weight:700;color:#fff;padding:2px 0;text-align:center}
 .row{display:flex;gap:8px;margin-top:16px}
 .bred{background:#fecaca;color:#991b1b;border:1px solid #fca5a5}
+.ov{position:fixed;inset:0;background:rgba(28,25,23,.85);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px;z-index:200}.ov img{width:100%;max-width:310px;aspect-ratio:1/1;object-fit:cover;border-radius:24px;border:3px solid #fde68a;box-shadow:0 20px 50px rgba(0,0,0,.6)}
 </style>
 <script>
 var k=0,m=parseInt(localStorage.getItem('m15')||'0'),u=JSON.parse(localStorage.getItem('u15')||'[]');
@@ -61,11 +62,12 @@ function go(v){
     var h='';
     for(var i=1;i<=15;i++){
       var op=u.indexOf(i)>-1,rk=i<=7?0:(i<=12?1:2),nm=rk===0?'Обычный':(rk===1?'Редкий':'Легендарный');
-      h+='<div class="gi '+(op?'':'lk')+'"><img src="s'+i+'.jpg">'+(op?'':'<div class="qm">?</div>')+'<div class="gt r'+rk+'">'+nm+'</div></div>';
+      h+='<div class="gi '+(op?'':'lk')+'" '+(op?'onclick="big('+i+','+rk+',\''+nm+'\')"':'')+'><img src="s'+i+'.jpg">'+(op?'':'<div class="qm">?</div>')+'<div class="gt r'+rk+'">'+nm+'</div></div>';
     }
     document.getElementById('gr').innerHTML=h;
   }
 }
+function big(i,rk,nm){var o=document.getElementById('ov');o.innerHTML='<img src="s'+i+'.jpg"><div class="tag r'+rk+'" style="position:static;margin-top:14px;font-size:14px;padding:6px 16px">'+nm+'</div><p style="color:#fde68a;margin-top:12px">Нажми в любое место, чтобы закрыть</p>';o.style.display='flex';}
 function tap(e){
   m++;updM();
   if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');
@@ -153,5 +155,6 @@ function roll(){
 </div>
 </div>
 <audio id="bg" src="music.mp3" loop></audio>
+<div id="ov" class="ov" onclick="this.style.display='none'"></div>
 </body>
 </html>
