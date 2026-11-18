@@ -31,7 +31,10 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:6px}
 .sm{padding:6px 10px;border-radius:11px;border:1px solid #fde68a;background:#fff;color:#78350f;font-size:12px;font-weight:600;cursor:pointer}
 .bal{padding:6px 10px;border-radius:11px;background:rgba(254,243,199,.9);border:1px solid #fde68a;color:#b45309;font-size:12px;font-weight:700}
-.clk{width:165px;height:165px;border-radius:50%;overflow:hidden;margin:10px auto 18px;background:rgba(254,243,199,.7);border:4px solid #f59e0b;box-shadow:0 12px 28px rgba(217,119,6,.3);cursor:pointer;transition:transform .08s}
+.cbw{width:100%;height:10px;background:rgba(254,243,199,.9);border-radius:9px;overflow:hidden;border:1px solid #fde68a;margin:8px 0 4px}
+.cbf{height:100%;width:0%;background:linear-gradient(90deg,#f59e0b,#ea580c);transition:width .12s}
+.cbt{font-size:11px;font-weight:700;color:#b45309;min-height:16px;margin-bottom:4px}
+.clk{width:160px;height:160px;border-radius:50%;overflow:hidden;margin:6px auto 16px;background:rgba(254,243,199,.7);border:4px solid #f59e0b;box-shadow:0 12px 28px rgba(217,119,6,.3);cursor:pointer;transition:transform .08s}
 .clk:active{transform:scale(.91)}
 .pop{position:fixed;pointer-events:none;font-weight:700;font-size:18px;color:#b45309;text-shadow:0 2px 6px rgba(255,255,255,.9);animation:fly .65s ease-out forwards;z-index:99}
 @keyframes fly{0%{opacity:1;transform:translate(-50%,-50%) scale(.8)}100%{opacity:0;transform:translate(-50%,-95px) scale(1.2)}}
@@ -45,10 +48,11 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .gi .gt{position:absolute;bottom:0;inset-x:0;font-size:9px;font-weight:700;color:#fff;padding:2px 0;text-align:center}
 .row{display:flex;gap:8px;margin-top:16px}
 .bred{background:#fecaca;color:#991b1b;border:1px solid #fca5a5}
-.ov{position:fixed;inset:0;background:rgba(28,25,23,.85);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px;z-index:200}.ov img{width:100%;max-width:310px;aspect-ratio:1/1;object-fit:cover;border-radius:24px;border:3px solid #fde68a;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.ov{position:fixed;inset:0;background:rgba(28,25,23,.85);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px;z-index:200}
+.ov img{width:100%;max-width:310px;aspect-ratio:1/1;object-fit:cover;border-radius:24px;border:3px solid #fde68a;box-shadow:0 20px 50px rgba(0,0,0,.6)}
 </style>
 <script>
-var k=0,m=parseInt(localStorage.getItem('m15')||'0'),u=JSON.parse(localStorage.getItem('u15')||'[]');
+var k=0,m=parseInt(localStorage.getItem('m15')||'0'),u=JSON.parse(localStorage.getItem('u15')||'[]'),cb=0,x2=0;
 function updM(){
   if(document.getElementById('m1'))document.getElementById('m1').innerText=m;
   if(document.getElementById('m2'))document.getElementById('m2').innerText=m;
@@ -69,19 +73,20 @@ function go(v){
 }
 function big(i,rk,nm){var o=document.getElementById('ov');o.innerHTML='<img src="s'+i+'.jpg"><div class="tag r'+rk+'" style="position:static;margin-top:14px;font-size:14px;padding:6px 16px">'+nm+'</div><p style="color:#fde68a;margin-top:12px">Нажми в любое место, чтобы закрыть</p>';o.style.display='flex';}
 function tap(e){
-  m++;updM();
-  if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');
-  var el=document.createElement('div');el.className='pop';el.innerText='🪙 +1';
+  var add=x2>0?2:1;m+=add;updM();
+  if(x2<=0){cb=Math.min(100,cb+7);if(cb>=100)x2=50;}
+  if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred(x2>0?'medium':'light');
+  var el=document.createElement('div');el.className='pop';el.innerText=x2>0?'🔥 +2':'🪙 +1';
   var x=(e&&e.clientX)?e.clientX:innerWidth/2,y=(e&&e.clientY)?e.clientY:innerHeight/2;
   el.style.left=x+'px';el.style.top=y+'px';document.body.appendChild(el);
   setTimeout(function(){el.remove();},650);
 }
-function wipe(){
-  m=0;u=[];localStorage.setItem('m15','0');localStorage.setItem('u15','[]');
-  document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';
-  document.getElementById('mr').innerText='✨ Прогресс сброшен!';
-  go('v2');
-}
+setInterval(function(){
+  if(x2>0){x2--;cb=x2*2;if(document.getElementById('cbt'))document.getElementById('cbt').innerText='🔥 РЕЖИМ ×2! ('+(x2/10).toFixed(1)+'с)';}
+  else{if(cb>0)cb=Math.max(0,cb-2);if(document.getElementById('cbt'))document.getElementById('cbt').innerText=cb>0?'Комбо: '+cb+'%':'Кликай быстро для ×2!';}
+  if(document.getElementById('cbf'))document.getElementById('cbf').style.width=cb+'%';
+},100);
+function wipe(){m=0;u=[];localStorage.setItem('m15','0');localStorage.setItem('u15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';go('v2');}
 function roll(){
   var b=document.getElementById('rb');if(b.disabled)return;
   if(m<3){document.getElementById('mr').innerText='❌ Нужно 3 🪙! Покликай ещё';return;}
@@ -105,21 +110,11 @@ function roll(){
 <div class="card" id="c">
 <div id="v1">
 <div class="top">
-<svg class="dec" style="left:16px;top:16px;width:28px;height:28px"><use href="#sf"/></svg>
-<svg class="dec" style="left:44px;top:4px;width:13px;height:13px"><use href="#st"/></svg>
-<svg class="dec" style="left:10px;bottom:14px;width:13px;height:13px"><use href="#st"/></svg>
-<svg class="dec" style="left:36px;bottom:20px;width:15px;height:15px"><use href="#st"/></svg>
+<svg class="dec" style="left:16px;top:16px;width:28px;height:28px"><use href="#sf"/></svg><svg class="dec" style="left:44px;top:4px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="left:10px;bottom:14px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="left:36px;bottom:20px;width:15px;height:15px"><use href="#st"/></svg>
 <div class="ava"><img src="c2e141b3bc262e2364d393de592dc9b9.jpg"></div>
-<svg class="dec" style="right:42px;top:4px;width:14px;height:14px"><use href="#st"/></svg>
-<svg class="dec" style="right:10px;top:14px;width:34px;height:34px"><use href="#sf"/></svg>
-<svg class="dec" style="right:40px;bottom:22px;width:13px;height:13px"><use href="#st"/></svg>
-<svg class="dec" style="right:14px;bottom:8px;width:24px;height:24px"><use href="#sf"/></svg>
+<svg class="dec" style="right:42px;top:4px;width:14px;height:14px"><use href="#st"/></svg><svg class="dec" style="right:10px;top:14px;width:34px;height:34px"><use href="#sf"/></svg><svg class="dec" style="right:40px;bottom:22px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="right:14px;bottom:8px;width:24px;height:24px"><use href="#sf"/></svg>
 </div>
-<div class="name">
-<svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg>
-<h1>@Empty23AM</h1>
-<svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg>
-</div>
+<div class="name"><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg><h1>@Empty23AM</h1><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg></div>
 <p>Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
 <div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">43д 11ч 00м 00с</div></div>
 <button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'⛄️ Промах! В сугроб ('+k+')'">⛄️ Бросить снежок</button>
@@ -129,7 +124,8 @@ function roll(){
 </div>
 <div id="v4" style="display:none">
 <div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><button class="sm" id="mb" onclick="var a=document.getElementById('bg');if(a.paused){a.play();this.innerText='🔊';}else{a.pause();this.innerText='🔇';}">🔇</button><span class="bal">🪙 <span id="m1">0</span></span></div>
-<p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p>
+<div class="cbw"><div class="cbf" id="cbf"></div></div>
+<div class="cbt" id="cbt">Кликай быстро для ×2!</div>
 <div class="clk" onclick="tap(event)"><img src="click.jpg"></div>
 <button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button>
 </div>
