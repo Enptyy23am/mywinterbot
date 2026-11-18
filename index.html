@@ -33,6 +33,8 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .bal{padding:6px 10px;border-radius:11px;background:rgba(254,243,199,.9);border:1px solid #fde68a;color:#b45309;font-size:12px;font-weight:700}
 .clk{width:165px;height:165px;border-radius:50%;overflow:hidden;margin:10px auto 18px;background:rgba(254,243,199,.7);border:4px solid #f59e0b;box-shadow:0 12px 28px rgba(217,119,6,.3);cursor:pointer;transition:transform .08s}
 .clk:active{transform:scale(.91)}
+.pop{position:fixed;pointer-events:none;font-weight:700;font-size:18px;color:#b45309;text-shadow:0 2px 6px rgba(255,255,255,.9);animation:fly .65s ease-out forwards;z-index:99}
+@keyframes fly{0%{opacity:1;transform:translate(-50%,-50%) scale(.8)}100%{opacity:0;transform:translate(-50%,-95px) scale(1.2)}}
 .slot{width:180px;height:180px;margin:0 auto 14px;border-radius:20px;overflow:hidden;border:3px solid #fde68a;background:rgba(254,243,199,.5);display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 10px 25px rgba(180,83,9,.15)}
 .tag{position:absolute;bottom:8px;padding:3px 10px;border-radius:9px;font-size:11px;font-weight:700;color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.3)}
 .r0{background:#78716c}.r1{background:#0284c7}.r2{background:linear-gradient(135deg,#f59e0b,#b45309)}
@@ -64,9 +66,13 @@ function go(v){
     document.getElementById('gr').innerHTML=h;
   }
 }
-function tap(){
+function tap(e){
   m++;updM();
   if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');
+  var el=document.createElement('div');el.className='pop';el.innerText='🪙 +1';
+  var x=(e&&e.clientX)?e.clientX:innerWidth/2,y=(e&&e.clientY)?e.clientY:innerHeight/2;
+  el.style.left=x+'px';el.style.top=y+'px';document.body.appendChild(el);
+  setTimeout(function(){el.remove();},650);
 }
 function wipe(){
   m=0;u=[];localStorage.setItem('m15','0');localStorage.setItem('u15','[]');
@@ -117,34 +123,3 @@ function roll(){
 <button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'⛄️ Промах! В сугроб ('+k+')'">⛄️ Бросить снежок</button>
 <button class="btn b2" onclick="go('v4')">🎮 Мини-игра</button>
 <button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
-<div class="res" id="r"></div>
-</div>
-<div id="v4" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div>
-<p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p>
-<div class="clk" onclick="tap()"><img src="click.jpg"></div>
-<button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button>
-</div>
-<div id="v2" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/15</button></div>
-<div class="slot" id="sl"><span style="font-size:44px">🎁</span></div>
-<button class="btn b1" id="rb" onclick="roll()">🃏 Открыть за 3 🪙</button>
-<div class="res" id="mr"></div>
-<button class="rst" onclick="go('v5')">🗑 Сбросить прогресс</button>
-</div>
-<div id="v3" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v2')">← В игру</button><span style="font-size:13px;font-weight:700;color:#78350f">Коллекция</span></div>
-<div class="grid" id="gr"></div>
-</div>
-<div id="v5" style="display:none;padding:12px 4px">
-<div style="font-size:38px;margin-bottom:8px">⚠️</div>
-<h1 style="font-size:18px;margin-bottom:8px">Сбросить прогресс?</h1>
-<p style="margin-bottom:4px">Все накопленные монетки и открытые карточки будут удалены навсегда.</p>
-<div class="row">
-<button class="btn b1" style="margin:0" onclick="go('v2')">Отмена</button>
-<button class="btn bred" style="margin:0" onclick="wipe()">Да, сбросить</button>
-</div>
-</div>
-</div>
-</body>
-</html>
