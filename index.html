@@ -141,7 +141,7 @@ function ctab(n){
   ct=n;
   document.getElementById('ct1').className='tab'+(n===1?' act':'');
   document.getElementById('ct2').className='tab'+(n===2?' act':'');
-  var h='',tot=(n===1)?15:9,arr=(n===1)?u:eu,pf=(n===1)?'s':'e';
+  var h='',tot=(n===1)?15:10,arr=(n===1)?u:eu,pf=(n===1)?'s':'e';
   for(var i=1;i<=tot;i++){
     var op=arr.indexOf(i)>-1,rk=(n===1)?(i<=7?0:(i<=12?1:2)):(i<=4?0:(i<=7?1:2)),nm=rk===0?'Обычный':(rk===1?'Редкий':'Легендарный');
     h+='<div class="gi '+(op?'':'lk')+'" '+(op?'onclick="big(\''+pf+i+'.jpg\','+rk+',\''+nm+'\')"':'')+'><img src="'+pf+i+'.jpg">'+(op?'':'<div class="qm">?</div>')+'<div class="gt r'+rk+'">'+nm+'</div></div>';
@@ -210,7 +210,7 @@ function roll(){
     rk=i<=7?0:(i<=12?1:2);
     if(u.indexOf(i)<0){u.push(i);localStorage.setItem('u15',JSON.stringify(u));}
   }else{
-    pf='e';i=r<.55?Math.floor(Math.random()*4)+1:(r<.87?Math.floor(Math.random()*3)+5:Math.floor(Math.random()*2)+8);
+    pf='e';i=r<.55?Math.floor(Math.random()*4)+1:(r<.87?Math.floor(Math.random()*3)+5:Math.floor(Math.random()*3)+8);
     rk=i<=4?0:(i<=7?1:2);
     if(eu.indexOf(i)<0){eu.push(i);localStorage.setItem('eu9',JSON.stringify(eu));}
   }
@@ -254,7 +254,7 @@ function roll(){
 <button class="btn b1" onclick="go('v2')">🃏 Открыть карточки</button>
 </div>
 <div id="v2" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/24</button></div>
+<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/25</button></div>
 <div class="tabs"><button class="tab act" id="rt1" onclick="rtab(1)">🎄 Зимние</button><button class="tab" id="rt2" onclick="rtab(2)">🌌 Космос</button></div>
 <div id="rbox">
 <div class="slot" id="sl"><span style="font-size:44px">🎁</span></div>
@@ -271,7 +271,7 @@ function roll(){
 </div>
 <div id="v3" style="display:none">
 <div class="hd"><button class="sm" onclick="go('v2')">← В игру</button><span style="font-size:13px;font-weight:700;color:#78350f">Коллекция</span></div>
-<div class="tabs"><button class="tab act" id="ct1" onclick="ctab(1)">🎄 Зимние (15)</button><button class="tab" id="ct2" onclick="ctab(2)">🌌 Космос (9)</button></div>
+<div class="tabs"><button class="tab act" id="ct1" onclick="ctab(1)">🎄 Зимние (15)</button><button class="tab" id="ct2" onclick="ctab(2)">🌌 Космос (10)</button></div>
 <div class="grid" id="gr"></div>
 </div>
 <div id="v5" style="display:none;padding:12px 4px">
