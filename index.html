@@ -17,7 +17,7 @@ h1{font-size:22px;font-weight:700;color:#292524;margin-bottom:6px}
 p{font-size:14px;color:#57534e;margin-bottom:18px;line-height:1.4}
 .tbox{background:rgba(254,243,199,.65);border:1px solid rgba(253,230,138,.7);border-radius:16px;padding:12px;margin-bottom:18px}
 .tt{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#b45309;font-weight:700;margin-bottom:4px}
-.tv{font-size:18px;font-weight:700;color:#292524}
+.tv{font-size:18px;font-weight:700;color:#292524;font-variant-numeric:tabular-nums}
 .btn{width:100%;padding:14px;border:none;border-radius:16px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
 .btn:active{transform:scale(.96)}
 .b1{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 6px 18px rgba(217,119,6,.35)}
@@ -25,22 +25,15 @@ p{font-size:14px;color:#57534e;margin-bottom:18px;line-height:1.4}
 .res{margin-top:8px;font-size:14px;min-height:20px;color:#b45309;font-weight:600}
 </style>
 </head>
-<body>
+<body onload="window.k=0;if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
 <div class="card" id="c">
 <div class="ava"><img src="c2e141b3bc262e2364d393de592dc9b9.jpg"></div>
 <h1>@Empty23AM</h1>
 <p>Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
-<div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">...</div></div>
-<button class="btn b1" onclick="hit()">⛄️ Бросить снежок</button>
-<button class="btn b2" onclick="tg.close()">✉️ Написать сообщение</button>
+<div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">43д 12ч 46м 00с</div></div>
+<button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)window.k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+window.k+')':'⛄️ Промах! В сугроб ('+window.k+')'">⛄️ Бросить снежок</button>
+<button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
 <div class="res" id="r"></div>
 </div>
-<script>
-const tg=window.Telegram.WebApp;tg.ready();tg.expand();
-function upd(){const n=new Date(),ny=new Date(n.getFullYear()+1,0,1),df=ny-n;document.getElementById('cd').innerText=Math.floor(df/864e5)+'д '+Math.floor(df/36e5%24)+'ч '+Math.floor(df/6e4%60)+'м '+Math.floor(df/1e3%60)+'с';}
-setInterval(upd,1000);upd();
-let k=0;
-function hit(){const c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');if(tg.HapticFeedback)tg.HapticFeedback.impactOccurred('medium');const ok=Math.random()<.5;if(ok)k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'⛄️ Промах! В сугроб ('+k+')';}
-</script>
 </body>
 </html>
