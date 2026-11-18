@@ -8,8 +8,9 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent}
 body{background:#1c1917 url('83059cadf5a9f1190c93dee7fc6f2dbe.jpg') center/cover no-repeat;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.achb{position:fixed;top:14px;right:14px;background:rgba(255,250,240,.92);border:2px solid #fde68a;border-radius:16px;padding:8px 13px;font-size:13px;font-weight:700;color:#78350f;box-shadow:0 8px 20px rgba(0,0,0,.35);cursor:pointer;z-index:150;display:none;align-items:center;gap:5px}
-.achb:active{transform:scale(.95)}
+.achb,.shpb{position:fixed;top:14px;background:rgba(255,250,240,.92);border:2px solid #fde68a;border-radius:16px;padding:8px 13px;font-size:13px;font-weight:700;color:#78350f;box-shadow:0 8px 20px rgba(0,0,0,.35);cursor:pointer;z-index:150;display:none;align-items:center;gap:5px}
+.achb{right:14px}.shpb{left:14px}
+.achb:active,.shpb:active{transform:scale(.95)}
 .dot{position:absolute;top:-5px;right:-5px;width:16px;height:16px;border-radius:50%;background:#ef4444;color:#fff;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(239,68,68,.5)}
 .card{background:rgba(255,250,240,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(253,230,138,.85);border-radius:26px;padding:24px 20px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 45px rgba(28,25,23,.45)}
 .shake{animation:sh .35s ease}
@@ -61,7 +62,7 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .abtn{padding:6px 10px;border-radius:10px;border:none;font-size:11px;font-weight:700;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;cursor:pointer;white-space:nowrap}
 </style>
 <script>
-var k=0,m=parseInt(localStorage.getItem('m15')||'0'),mx=parseInt(localStorage.getItem('mx15')||m),x2c=parseInt(localStorage.getItem('x2c')||'0'),u=JSON.parse(localStorage.getItem('u15')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),cb=0,x2=0,cur='v1';
+var k=0,m=parseInt(localStorage.getItem('m15')||'0'),mx=parseInt(localStorage.getItem('mx15')||m),x2c=parseInt(localStorage.getItem('x2c')||'0'),slv=parseInt(localStorage.getItem('slv')||'0'),u=JSON.parse(localStorage.getItem('u15')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),cb=0,x2=0,PR=[150,500,1200,2000];
 var AC=[
   {id:1,t:'🐾 Первые лапки',d:'Накопить 100 монет',r:25,ok:function(){return mx>=100;}},
   {id:2,t:'💰 Кошачий магнат',d:'Накопить 250 монет',r:50,ok:function(){return mx>=250;}},
@@ -78,15 +79,15 @@ function chkA(){
   if(document.getElementById('adot'))document.getElementById('adot').style.display=nw>0?'flex':'none';
 }
 function updM(){
-  if(document.getElementById('m1'))document.getElementById('m1').innerText=m;
-  if(document.getElementById('m2'))document.getElementById('m2').innerText=m;
+  ['m1','m2','m3'].forEach(function(id){if(document.getElementById(id))document.getElementById(id).innerText=m;});
   if(document.getElementById('cnt'))document.getElementById('cnt').innerText=u.length;
   localStorage.setItem('m15',m);chkA();
 }
 function go(v){
-  cur=v;
-  ['v1','v2','v3','v4','v5','v6'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=(id===v)?'block':'none';});
-  if(document.getElementById('achb'))document.getElementById('achb').style.display=(v==='v1'||v==='v6')?'none':'flex';
+  ['v1','v2','v3','v4','v5','v6','v7'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=(id===v)?'block':'none';});
+  var topOn=(v==='v2'||v==='v3'||v==='v4');
+  if(document.getElementById('achb'))document.getElementById('achb').style.display=topOn?'flex':'none';
+  if(document.getElementById('shpb'))document.getElementById('shpb').style.display=topOn?'flex':'none';
   updM();
   if(v==='v3'){
     var h='';
@@ -105,12 +106,25 @@ function go(v){
     });
     document.getElementById('al').innerHTML=ah;
   }
+  if(v==='v7')updS();
 }
-function claim(id,r){
-  if(cl.indexOf(id)>-1)return;
-  cl.push(id);localStorage.setItem('cl15',JSON.stringify(cl));
-  m+=r;updM();go('v6');
+function updS(){
+  var cd=(3-slv*0.5).toFixed(1),nx=slv<4?(3-(slv+1)*0.5).toFixed(1):'1.0';
+  document.getElementById('slv').innerText=slv+'/4';
+  document.getElementById('scd').innerText=slv<4?(cd+'с → '+nx+'с'):'1.0с (Максимум)';
+  var b=document.getElementById('sbtn');
+  if(slv>=4){b.disabled=true;b.innerText='✅ Максимальный уровень';}
+  else{b.disabled=false;b.innerText='Улучшить за '+PR[slv]+' 🪙';}
+  document.getElementById('smsg').innerText='';
 }
+function buyS(){
+  if(slv>=4)return;
+  var p=PR[slv];
+  if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}
+  m-=p;slv++;localStorage.setItem('slv',slv);updM();updS();
+  document.getElementById('smsg').innerText='⚡ Таймер рулетки ускорен!';
+}
+function claim(id,r){if(cl.indexOf(id)>-1)return;cl.push(id);localStorage.setItem('cl15',JSON.stringify(cl));m+=r;updM();go('v6');}
 function big(i,rk,nm){var o=document.getElementById('ov');o.innerHTML='<img src="s'+i+'.jpg"><div class="tag r'+rk+'" style="position:static;margin-top:14px;font-size:14px;padding:6px 16px">'+nm+'</div><p style="color:#fde68a;margin-top:12px">Нажми в любое место, чтобы закрыть</p>';o.style.display='flex';}
 function tap(e){
   var add=x2>0?2:1;m+=add;updM();
@@ -126,7 +140,7 @@ setInterval(function(){
   else{if(cb>0)cb=Math.max(0,cb-2);if(document.getElementById('cbt'))document.getElementById('cbt').innerText=cb>0?'Комбо: '+cb+'%':'Кликай быстро для ×2!';}
   if(document.getElementById('cbf'))document.getElementById('cbf').style.width=cb+'%';
 },100);
-function wipe(){m=0;mx=0;x2c=0;u=[];cl=[];localStorage.setItem('m15','0');localStorage.setItem('mx15','0');localStorage.setItem('x2c','0');localStorage.setItem('u15','[]');localStorage.setItem('cl15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';go('v2');}
+function wipe(){m=0;mx=0;x2c=0;slv=0;u=[];cl=[];localStorage.setItem('m15','0');localStorage.setItem('mx15','0');localStorage.setItem('x2c','0');localStorage.setItem('slv','0');localStorage.setItem('u15','[]');localStorage.setItem('cl15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';go('v2');}
 function roll(){
   var b=document.getElementById('rb');if(b.disabled)return;
   if(m<3){document.getElementById('mr').innerText='❌ Нужно 3 🪙! Покликай ещё';return;}
@@ -137,12 +151,14 @@ function roll(){
   updM();
   var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');
   document.getElementById('sl').innerHTML='<img src="s'+i+'.jpg"><div class="tag r'+rk+'">'+nm+'</div>';
-  b.disabled=true;var t=3;b.innerText='⏳ Подождите '+t+'с...';
-  var iv=setInterval(function(){t--;if(t>0){b.innerText='⏳ Подождите '+t+'с...';}else{clearInterval(iv);b.disabled=false;b.innerText='🃏 Открыть за 3 🪙';}},1000);
+  b.disabled=true;var t=Math.round((3-slv*0.5)*10);
+  b.innerText='⏳ Подождите '+(t/10).toFixed(1)+'с...';
+  var iv=setInterval(function(){t--;if(t>0){b.innerText='⏳ Подождите '+(t/10).toFixed(1)+'с...';}else{clearInterval(iv);b.disabled=false;b.innerText='🃏 Открыть за 3 🪙';}},100);
 }
 </script>
 </head>
 <body onload="updM();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
+<button class="shpb" id="shpb" onclick="go('v7')">🏪 Магазин</button>
 <button class="achb" id="achb" onclick="go('v6')">🏆 <span id="acnt">0</span>/6<span class="dot" id="adot">!</span></button>
 <svg style="display:none">
 <symbol id="sf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1M12 5l-2.5-2.5M12 5l2.5-2.5M12 19l-2.5 2.5M12 19l2.5 2.5M5 12l-2.5-2.5M5 12l-2.5 2.5M19 12l2.5-2.5M19 12l2.5 2.5"/></symbol>
@@ -184,7 +200,7 @@ function roll(){
 <div id="v5" style="display:none;padding:12px 4px">
 <div style="font-size:38px;margin-bottom:8px">⚠️</div>
 <h1 style="font-size:18px;margin-bottom:8px">Сбросить прогресс?</h1>
-<p style="margin-bottom:4px">Все накопленные монетки, достижения и открытые карточки будут удалены навсегда.</p>
+<p style="margin-bottom:4px">Все накопленные монетки, улучшения, достижения и открытые карточки будут удалены навсегда.</p>
 <div class="row">
 <button class="btn b1" style="margin:0" onclick="go('v2')">Отмена</button>
 <button class="btn bred" style="margin:0" onclick="wipe()">Да, сбросить</button>
@@ -193,6 +209,16 @@ function roll(){
 <div id="v6" style="display:none">
 <div class="hd"><button class="sm" onclick="go('v4')">← В кликер</button><span style="font-size:13px;font-weight:700;color:#78350f">🏆 Достижения</span></div>
 <div class="alist" id="al"></div>
+</div>
+<div id="v7" style="display:none">
+<div class="hd"><button class="sm" onclick="go('v4')">← В кликер</button><span class="bal">🪙 <span id="m3">0</span></span></div>
+<div class="ait dn" style="flex-direction:column;align-items:stretch;gap:10px;padding:14px">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">⏱ Быстрая рулетка</span><span class="bal" id="slv">0/4</span></div>
+<div class="at2">Уменьшает ожидание следующей карточки на 0.5 сек (минимум 1.0 сек).</div>
+<div style="font-size:13px;font-weight:700;color:#b45309">Таймер: <span id="scd">3.0с → 2.5с</span></div>
+<button class="btn b1" style="margin:0" id="sbtn" onclick="buyS()">Улучшить за 150 🪙</button>
+</div>
+<div class="res" id="smsg"></div>
 </div>
 </div>
 <audio id="bg" src="music.mp3" loop></audio>
