@@ -123,3 +123,32 @@ function roll(){
 <button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'⛄️ Промах! В сугроб ('+k+')'">⛄️ Бросить снежок</button>
 <button class="btn b2" onclick="go('v4')">🎮 Мини-игра</button>
 <button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
+<div id="v4" style="display:none">
+<div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div>
+<p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p>
+<div class="clk" onclick="tap(event)"><img src="click.jpg"></div>
+<button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button>
+</div>
+<div id="v2" style="display:none">
+<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/15</button></div>
+<div class="slot" id="sl"><span style="font-size:44px">🎁</span></div>
+<button class="btn b1" id="rb" onclick="roll()">🃏 Открыть за 3 🪙</button>
+<div class="res" id="mr"></div>
+<button class="rst" onclick="go('v5')">🗑 Сбросить прогресс</button>
+</div>
+<div id="v3" style="display:none">
+<div class="hd"><button class="sm" onclick="go('v2')">← В игру</button><span style="font-size:13px;font-weight:700;color:#78350f">Коллекция</span></div>
+<div class="grid" id="gr"></div>
+</div>
+<div id="v5" style="display:none;padding:12px 4px">
+<div style="font-size:38px;margin-bottom:8px">⚠️</div>
+<h1 style="font-size:18px;margin-bottom:8px">Сбросить прогресс?</h1>
+<p style="margin-bottom:4px">Все накопленные монетки и открытые карточки будут удалены навсегда.</p>
+<div class="row">
+<button class="btn b1" style="margin:0" onclick="go('v2')">Отмена</button>
+<button class="btn bred" style="margin:0" onclick="wipe()">Да, сбросить</button>
+</div>
+</div>
+</div>
+</body>
+</html>
