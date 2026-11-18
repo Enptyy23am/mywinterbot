@@ -53,7 +53,7 @@ function updM(){
   localStorage.setItem('m15',m);
 }
 function go(v){
-  ['v1','v2','v3','v4','v5'].forEach(function(id){document.getElementById(id).style.display=(id===v)?'block':'none';});
+  ['v1','v2','v3','v4','v5'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=(id===v)?'block':'none';});
   updM();
   if(v==='v3'){
     var h='';
@@ -64,23 +64,12 @@ function go(v){
     document.getElementById('gr').innerHTML=h;
   }
 }
-function tap(){
-  m++;updM();
-  if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');
-}
-function wipe(){
-  m=0;u=[];
-  localStorage.setItem('m15','0');localStorage.setItem('u15','[]');
-  document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';
-  document.getElementById('mr').innerText='✨ Прогресс сброшен!';
-  go('v2');
-}
+function tap(){m++;updM();if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');}
+function wipe(){m=0;u=[];localStorage.setItem('m15','0');localStorage.setItem('u15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';go('v2');}
 function roll(){
-  var b=document.getElementById('rb');
-  if(b.disabled)return;
+  var b=document.getElementById('rb');if(b.disabled)return;
   if(m<3){document.getElementById('mr').innerText='❌ Нужно 3 🪙! Покликай ещё';return;}
-  document.getElementById('mr').innerText='';
-  m-=3;updM();
+  document.getElementById('mr').innerText='';m-=3;updM();
   var r=Math.random(),i=r<.6?Math.floor(Math.random()*7)+1:(r<.9?Math.floor(Math.random()*5)+8:Math.floor(Math.random()*3)+13);
   var rk=i<=7?0:(i<=12?1:2),nm=rk===0?'Обычный':(rk===1?'Редкий':'Легендарный');
   if(u.indexOf(i)<0){u.push(i);localStorage.setItem('u15',JSON.stringify(u));}
@@ -97,15 +86,9 @@ function roll(){
 <div class="card" id="c">
 <div id="v1">
 <div class="top">
-<svg class="dec" style="left:16px;top:16px;width:28px;height:28px"><use href="#sf"/></svg>
-<svg class="dec" style="left:44px;top:4px;width:13px;height:13px"><use href="#st"/></svg>
-<svg class="dec" style="left:10px;bottom:14px;width:13px;height:13px"><use href="#st"/></svg>
-<svg class="dec" style="left:36px;bottom:20px;width:15px;height:15px"><use href="#st"/></svg>
+<svg class="dec" style="left:16px;top:16px;width:28px;height:28px"><use href="#sf"/></svg><svg class="dec" style="left:44px;top:4px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="left:10px;bottom:14px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="left:36px;bottom:20px;width:15px;height:15px"><use href="#st"/></svg>
 <div class="ava"><img src="c2e141b3bc262e2364d393de592dc9b9.jpg"></div>
-<svg class="dec" style="right:42px;top:4px;width:14px;height:14px"><use href="#st"/></svg>
-<svg class="dec" style="right:10px;top:14px;width:34px;height:34px"><use href="#sf"/></svg>
-<svg class="dec" style="right:40px;bottom:22px;width:13px;height:13px"><use href="#st"/></svg>
-<svg class="dec" style="right:14px;bottom:8px;width:24px;height:24px"><use href="#sf"/></svg>
+<svg class="dec" style="right:42px;top:4px;width:14px;height:14px"><use href="#st"/></svg><svg class="dec" style="right:10px;top:14px;width:34px;height:34px"><use href="#sf"/></svg><svg class="dec" style="right:40px;bottom:22px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="right:14px;bottom:8px;width:24px;height:24px"><use href="#sf"/></svg>
 </div>
 <div class="name"><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg><h1>@Empty23AM</h1><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg></div>
 <p>Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
@@ -115,10 +98,4 @@ function roll(){
 <button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
 <div class="res" id="r"></div>
 </div>
-<div id="v4" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div>
-<p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p>
-<div class="clk" onclick="tap()"><img src="click.jpg"></div>
-<button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button>
-</div>
-<div id="v2" style="display:none">
+<div id="v4" style="display:none"><div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div><p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p><div class="clk" onclick="tap()"><img src="click.jpg"></div><button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button></div>
