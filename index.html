@@ -184,5 +184,18 @@ function roll(){
 <div id="v5" style="display:none;padding:12px 4px">
 <div style="font-size:38px;margin-bottom:8px">⚠️</div>
 <h1 style="font-size:18px;margin-bottom:8px">Сбросить прогресс?</h1>
-<p style="margin-bottom:4px">Все накопленные монетки и открытые карточки будут удалены навсегда.</p>
+<p style="margin-bottom:4px">Все накопленные монетки, достижения и открытые карточки будут удалены навсегда.</p>
 <div class="row">
+<button class="btn b1" style="margin:0" onclick="go('v2')">Отмена</button>
+<button class="btn bred" style="margin:0" onclick="wipe()">Да, сбросить</button>
+</div>
+</div>
+<div id="v6" style="display:none">
+<div class="hd"><button class="sm" onclick="go('v4')">← В кликер</button><span style="font-size:13px;font-weight:700;color:#78350f">🏆 Достижения</span></div>
+<div class="alist" id="al"></div>
+</div>
+</div>
+<audio id="bg" src="music.mp3" loop></audio>
+<div id="ov" class="ov" onclick="this.style.display='none'"></div>
+</body>
+</html>
