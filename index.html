@@ -1,205 +1,68 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>@Empty23AM — Зимний бот</title>
-    <script src="https://telegram.org"></script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-        body {
-            background-color: #0f172a;
-            background-image: linear-gradient(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.45)), url('4474c952b6a4acef4c2e620dcb8a7b76.jpg
-');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: #0f172a;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-        canvas#snow {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-        .card {
-            background: rgba(255, 255, 255, 0.82);
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            border: 1px solid rgba(255, 255, 255, 0.95);
-            border-radius: 26px;
-            padding: 28px 22px;
-            width: 100%;
-            max-width: 380px;
-            text-align: center;
-            z-index: 2;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
-            transition: transform 0.2s ease;
-        }
-        .shake { animation: shakeAnim 0.35s ease; }
-        @keyframes shakeAnim {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px) rotate(-1deg); }
-            75% { transform: translateX(8px) rotate(1deg); }
-        }
-        .avatar {
-            width: 90px; height: 90px;
-            border-radius: 50%;
-            overflow: hidden;
-            background: linear-gradient(135deg, #bae6fd 0%, #e0e7ff 100%);
-            margin: 0 auto 14px;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-            border: 3px solid #ffffff;
-        }
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: #0f172a; letter-spacing: 0.3px; }
-        .subtitle { font-size: 14px; color: #334155; margin-bottom: 20px; line-height: 1.4; }
-        .timer-box {
-            background: rgba(241, 245, 249, 0.85);
-            border-radius: 16px;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
-        }
-        .timer-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #0284c7; font-weight: 700; margin-bottom: 4px; }
-        .timer-val { font-size: 18px; font-weight: 700; color: #0f172a; font-variant-numeric: tabular-nums; }
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 16px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.15s ease;
-            margin-bottom: 10px;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn:active { transform: scale(0.96); }
-        .btn-snow {
-            background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
-            color: #ffffff;
-            box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
-        }
-        .btn-chat {
-            background: rgba(255, 255, 255, 0.9);
-            color: #1e293b;
-            border: 1px solid #e2e8f0;
-        }
-        .result {
-            margin-top: 12px;
-            font-size: 14px;
-            min-height: 20px;
-            color: #0284c7;
-            font-weight: 600;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>@Empty23AM</title>
+<script src="https://telegram.org"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
+body{background:#0f172a url('4474c952b6a4acef4c2e620dcb8a7b76.jpg') center/cover no-repeat;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:1}
+.card{background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid #fff;border-radius:26px;padding:28px 22px;width:100%;max-width:360px;text-align:center;z-index:2;box-shadow:0 20px 45px rgba(0,0,0,.35)}
+.shake{animation:sh .35s ease}
+@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.ava{width:90px;height:90px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:3px solid #fff;box-shadow:0 8px 20px rgba(0,0,0,.15)}
+.ava img{width:100%;height:100%;object-fit:cover;display:block}
+h1{font-size:22px;font-weight:700;color:#0f172a;margin-bottom:6px}
+p{font-size:14px;color:#334155;margin-bottom:18px;line-height:1.4}
+.tbox{background:rgba(241,245,249,.9);border-radius:16px;padding:12px;margin-bottom:18px}
+.tt{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#0284c7;font-weight:700;margin-bottom:4px}
+.tv{font-size:18px;font-weight:700;color:#0f172a}
+.btn{width:100%;padding:14px;border:none;border-radius:16px;font-size:16px;font-weight:600;cursor:pointer;margin-bottom:10px}
+.btn:active{transform:scale(.96)}
+.b1{background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;box-shadow:0 6px 18px rgba(56,189,248,.4)}
+.b2{background:#fff;color:#1e293b;border:1px solid #e2e8f0}
+.res{margin-top:8px;font-size:14px;min-height:20px;color:#0284c7;font-weight:600}
+</style>
 </head>
 <body>
-
-<canvas id="snow"></canvas>
-
-<div class="card" id="mainCard">
-    <div class="avatar">
-        <img src="c2e141b3bc262e2364d393de592dc9b9.jpg" alt="Аватар">
-    </div>
-    <h1>@Empty23AM</h1>
-    <p class="subtitle">Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
-
-    <div class="timer-box">
-        <div class="timer-title">⏳ До Нового года</div>
-        <div class="timer-val" id="countdown">Загрузка...</div>
-    </div>
-
-    <button class="btn btn-snow" onclick="throwSnowball()">❄️ Бросить снежок</button>
-    <button class="btn btn-chat" onclick="closeApp()">✉️ Написать сообщение</button>
-    <div class="result" id="resultText"></div>
+<canvas id="s"></canvas>
+<div class="card" id="c">
+<div class="ava"><img src="c2e141b3bc262e2364d393de592dc9b9.jpg"></div>
+<h1>@Empty23AM</h1>
+<p>Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
+<div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">...</div></div>
+<button class="btn b1" onclick="hit()">❄️ Бросить снежок</button>
+<button class="btn b2" onclick="tg.close()">✉️ Написать сообщение</button>
+<div class="res" id="r"></div>
 </div>
-
 <script>
-    const tg = window.Telegram.WebApp;
-    tg.ready();
-    tg.expand();
-
-    function updateTimer() {
-        const now = new Date();
-        const nextYear = new Date(now.getFullYear() + 1, 0, 1);
-        const diff = nextYear - now;
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const m = Math.floor((diff / 1000 / 60) % 60);
-        const s = Math.floor((diff / 1000) % 60);
-        document.getElementById('countdown').innerText = `${d}д ${h}ч ${m}м ${s}с`;
-    }
-    setInterval(updateTimer, 1000);
-    updateTimer();
-
-    let hits = 0;
-    function throwSnowball() {
-        const card = document.getElementById('mainCard');
-        const res = document.getElementById('resultText');
-
-        card.classList.remove('shake');
-        void card.offsetWidth;
-        card.classList.add('shake');
-
-        if (tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
-
-        const isHit = Math.random() < 0.5;
-        if (isHit) {
-            hits++;
-            res.innerText = `☃️ Прямое попадание! Попаданий: ${hits}`;
-        } else {
-            res.innerText = `❄️ Промах! Снежок улетел в сугроб (Попаданий: ${hits})`;
-        }
-    }
-
-    function closeApp() {
-        tg.close();
-    }
-
-    const canvas = document.getElementById('snow');
-    const ctx = canvas.getContext('2d');
-    let w = canvas.width = window.innerWidth;
-    let h = canvas.height = window.innerHeight;
-    const flakes = Array.from({length: 80}, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        r: Math.random() * 3.5 + 1.5,
-        d: Math.random() * 1.2 + 0.5
-    }));
-
-    function drawSnow() {
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
-        ctx.beginPath();
-        for (let f of flakes) {
-            ctx.moveTo(f.x, f.y);
-            ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-        }
-        ctx.fill();
-        for (let f of flakes) {
-            f.y += f.d;
-            f.x += Math.sin(f.y * 0.01) * 0.6;
-            if (f.y > h) { f.y = -5; f.x = Math.random() * w; }
-        }
-        requestAnimationFrame(drawSnow);
-    }
-    drawSnow();
+const tg=window.Telegram.WebApp;tg.ready();tg.expand();
+function upd(){
+const n=new Date(),ny=new Date(n.getFullYear()+1,0,1),df=ny-n;
+const d=Math.floor(df/864e5),h=Math.floor(df/36e5%24),m=Math.floor(df/6e4%60),s=Math.floor(df/1e3%60);
+document.getElementById('cd').innerText=`${d}д ${h}ч ${m}м ${s}с`;
+}
+setInterval(upd,1000);upd();
+let k=0;
+function hit(){
+const c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');
+if(tg.HapticFeedback)tg.HapticFeedback.impactOccurred('medium');
+const ok=Math.random()<.5;if(ok)k++;
+document.getElementById('r').innerText=ok?`☃️ Прямое попадание! Попаданий: ${k}`:`❄️ Промах! Снежок улетел в сугроб (${k})`;
+}
+const cv=document.getElementById('s'),cx=cv.getContext('2d');
+let w=cv.width=innerWidth,h=cv.height=innerHeight;
+const fl=Array.from({length:75},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*3+1.5,d:Math.random()+.5}));
+function dr(){
+cx.clearRect(0,0,w,h);cx.fillStyle="rgba(255,255,255,.85)";cx.beginPath();
+for(let f of fl){cx.moveTo(f.x,f.y);cx.arc(f.x,f.y,f.r,0,6.28);}
+cx.fill();
+for(let f of fl){f.y+=f.d;f.x+=Math.sin(f.y*.01)*.6;if(f.y>h){f.y=-5;f.x=Math.random()*w;}}
+requestAnimationFrame(dr);
+}
+dr();
 </script>
 </body>
 </html>
