@@ -64,8 +64,16 @@ function go(v){
     document.getElementById('gr').innerHTML=h;
   }
 }
-function tap(){m++;updM();if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');}
-function wipe(){m=0;u=[];localStorage.setItem('m15','0');localStorage.setItem('u15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';go('v2');}
+function tap(){
+  m++;updM();
+  if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');
+}
+function wipe(){
+  m=0;u=[];localStorage.setItem('m15','0');localStorage.setItem('u15','[]');
+  document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';
+  document.getElementById('mr').innerText='✨ Прогресс сброшен!';
+  go('v2');
+}
 function roll(){
   var b=document.getElementById('rb');if(b.disabled)return;
   if(m<3){document.getElementById('mr').innerText='❌ Нужно 3 🪙! Покликай ещё';return;}
@@ -82,15 +90,28 @@ function roll(){
 </script>
 </head>
 <body onload="updM();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
-<svg style="display:none"><symbol id="sf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1M12 5l-2.5-2.5M12 5l2.5-2.5M12 19l-2.5 2.5M12 19l2.5 2.5M5 12l-2.5-2.5M5 12l-2.5 2.5M19 12l2.5-2.5M19 12l2.5 2.5"/></symbol><symbol id="st" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></symbol></svg>
+<svg style="display:none">
+<symbol id="sf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1M12 5l-2.5-2.5M12 5l2.5-2.5M12 19l-2.5 2.5M12 19l2.5 2.5M5 12l-2.5-2.5M5 12l-2.5 2.5M19 12l2.5-2.5M19 12l2.5 2.5"/></symbol>
+<symbol id="st" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></symbol>
+</svg>
 <div class="card" id="c">
 <div id="v1">
 <div class="top">
-<svg class="dec" style="left:16px;top:16px;width:28px;height:28px"><use href="#sf"/></svg><svg class="dec" style="left:44px;top:4px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="left:10px;bottom:14px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="left:36px;bottom:20px;width:15px;height:15px"><use href="#st"/></svg>
+<svg class="dec" style="left:16px;top:16px;width:28px;height:28px"><use href="#sf"/></svg>
+<svg class="dec" style="left:44px;top:4px;width:13px;height:13px"><use href="#st"/></svg>
+<svg class="dec" style="left:10px;bottom:14px;width:13px;height:13px"><use href="#st"/></svg>
+<svg class="dec" style="left:36px;bottom:20px;width:15px;height:15px"><use href="#st"/></svg>
 <div class="ava"><img src="c2e141b3bc262e2364d393de592dc9b9.jpg"></div>
-<svg class="dec" style="right:42px;top:4px;width:14px;height:14px"><use href="#st"/></svg><svg class="dec" style="right:10px;top:14px;width:34px;height:34px"><use href="#sf"/></svg><svg class="dec" style="right:40px;bottom:22px;width:13px;height:13px"><use href="#st"/></svg><svg class="dec" style="right:14px;bottom:8px;width:24px;height:24px"><use href="#sf"/></svg>
+<svg class="dec" style="right:42px;top:4px;width:14px;height:14px"><use href="#st"/></svg>
+<svg class="dec" style="right:10px;top:14px;width:34px;height:34px"><use href="#sf"/></svg>
+<svg class="dec" style="right:40px;bottom:22px;width:13px;height:13px"><use href="#st"/></svg>
+<svg class="dec" style="right:14px;bottom:8px;width:24px;height:24px"><use href="#sf"/></svg>
 </div>
-<div class="name"><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg><h1>@Empty23AM</h1><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg></div>
+<div class="name">
+<svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg>
+<h1>@Empty23AM</h1>
+<svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg>
+</div>
 <p>Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
 <div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">43д 11ч 00м 00с</div></div>
 <button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'⛄️ Промах! В сугроб ('+k+')'">⛄️ Бросить снежок</button>
@@ -98,4 +119,10 @@ function roll(){
 <button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
 <div class="res" id="r"></div>
 </div>
-<div id="v4" style="display:none"><div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div><p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p><div class="clk" onclick="tap()"><img src="click.jpg"></div><button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button></div>
+<div id="v4" style="display:none">
+<div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div>
+<p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p>
+<div class="clk" onclick="tap()"><img src="click.jpg"></div>
+<button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button>
+</div>
+<div id="v2" style="display:none">
