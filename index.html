@@ -7,9 +7,8 @@
 <script src="https://telegram.org"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif}
-body{background:#0f172a url('4474c952b6a4acef4c2e620dcb8a7b76.jpg') center/cover no-repeat;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
-canvas{position:fixed;inset:0;pointer-events:none;z-index:1}
-.card{background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid #fff;border-radius:26px;padding:28px 22px;width:100%;max-width:360px;text-align:center;z-index:2;box-shadow:0 20px 45px rgba(0,0,0,.35)}
+body{background:#0f172a url('83059cadf5a9f1190c93dee7fc6f2dbe.jpg') center/cover no-repeat;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid #fff;border-radius:26px;padding:28px 22px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 45px rgba(0,0,0,.35)}
 .shake{animation:sh .35s ease}
 @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .ava{width:90px;height:90px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:3px solid #fff;box-shadow:0 8px 20px rgba(0,0,0,.15)}
@@ -27,7 +26,6 @@ p{font-size:14px;color:#334155;margin-bottom:18px;line-height:1.4}
 </style>
 </head>
 <body>
-<canvas id="s"></canvas>
 <div class="card" id="c">
 <div class="ava"><img src="c2e141b3bc262e2364d393de592dc9b9.jpg"></div>
 <h1>@Empty23AM</h1>
@@ -51,21 +49,6 @@ if(tg.HapticFeedback)tg.HapticFeedback.impactOccurred('medium');
 const ok=Math.random()<.5;if(ok)k++;
 document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'❄️ Промах! В сугроб ('+k+')';
 }
-const cv=document.getElementById('s'),cx=cv.getContext('2d');
-let w=cv.width=window.innerWidth,h=cv.height=window.innerHeight;
-const fl=Array.from({length:90},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*4+2,d:Math.random()*1.5+0.8}));
-function dr(){
-cx.clearRect(0,0,w,h);
-cx.fillStyle="#ffffff";
-cx.shadowColor="#38bdf8";
-cx.shadowBlur=6;
-cx.beginPath();
-for(let f of fl){cx.moveTo(f.x,f.y);cx.arc(f.x,f.y,f.r,0,6.28);}
-cx.fill();
-for(let f of fl){f.y+=f.d;f.x+=Math.sin(f.y*.01)*.8;if(f.y>h){f.y=-5;f.x=Math.random()*w;}}
-requestAnimationFrame(dr);
-}
-dr();
 </script>
 </body>
 </html>
