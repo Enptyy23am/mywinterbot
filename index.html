@@ -8,7 +8,12 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
         body {
-            background: linear-gradient(180deg, #e0f2fe 0%, #f8fafc 50%, #eff6ff 100%);
+            background-color: #0f172a;
+            background-image: linear-gradient(rgba(15, 23, 42, 0.25), rgba(15, 23, 42, 0.45)), url('4474c952b6a4acef4c2e620dcb8a7b76.jpg
+');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: #0f172a;
             min-height: 100vh;
             display: flex;
@@ -26,16 +31,17 @@
             z-index: 1;
         }
         .card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 1);
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.95);
             border-radius: 26px;
-            padding: 30px 22px;
+            padding: 28px 22px;
             width: 100%;
             max-width: 380px;
             text-align: center;
             z-index: 2;
-            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.12);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
             transition: transform 0.2s ease;
         }
         .shake { animation: shakeAnim 0.35s ease; }
@@ -51,7 +57,7 @@
             background: linear-gradient(135deg, #bae6fd 0%, #e0e7ff 100%);
             margin: 0 auto 14px;
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 8px 20px rgba(56, 189, 248, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
             border: 3px solid #ffffff;
         }
         .avatar img {
@@ -61,15 +67,15 @@
             display: block;
         }
         h1 { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: #0f172a; letter-spacing: 0.3px; }
-        .subtitle { font-size: 14px; color: #475569; margin-bottom: 20px; line-height: 1.4; }
+        .subtitle { font-size: 14px; color: #334155; margin-bottom: 20px; line-height: 1.4; }
         .timer-box {
-            background: #f1f5f9;
+            background: rgba(241, 245, 249, 0.85);
             border-radius: 16px;
             padding: 12px;
             margin-bottom: 20px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid rgba(255, 255, 255, 0.8);
         }
-        .timer-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #0284c7; font-weight: 600; margin-bottom: 4px; }
+        .timer-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #0284c7; font-weight: 700; margin-bottom: 4px; }
         .timer-val { font-size: 18px; font-weight: 700; color: #0f172a; font-variant-numeric: tabular-nums; }
         .btn {
             width: 100%;
@@ -87,10 +93,10 @@
         .btn-snow {
             background: linear-gradient(135deg, #38bdf8 0%, #6366f1 100%);
             color: #ffffff;
-            box-shadow: 0 6px 18px rgba(56, 189, 248, 0.35);
+            box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
         }
         .btn-chat {
-            background: #f1f5f9;
+            background: rgba(255, 255, 255, 0.9);
             color: #1e293b;
             border: 1px solid #e2e8f0;
         }
@@ -116,7 +122,7 @@
 
     <div class="timer-box">
         <div class="timer-title">⏳ До Нового года</div>
-        <div class="timer-val" id="countdown">00д 00ч 00м 00с</div>
+        <div class="timer-val" id="countdown">Загрузка...</div>
     </div>
 
     <button class="btn btn-snow" onclick="throwSnowball()">❄️ Бросить снежок</button>
@@ -128,7 +134,6 @@
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
-    if (tg.setHeaderColor) tg.setHeaderColor('#e0f2fe');
 
     function updateTimer() {
         const now = new Date();
@@ -171,16 +176,16 @@
     const ctx = canvas.getContext('2d');
     let w = canvas.width = window.innerWidth;
     let h = canvas.height = window.innerHeight;
-    const flakes = Array.from({length: 65}, () => ({
+    const flakes = Array.from({length: 80}, () => ({
         x: Math.random() * w,
         y: Math.random() * h,
         r: Math.random() * 3.5 + 1.5,
-        d: Math.random() * 1 + 0.5
+        d: Math.random() * 1.2 + 0.5
     }));
 
     function drawSnow() {
         ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = "rgba(14, 165, 233, 0.35)";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
         ctx.beginPath();
         for (let f of flakes) {
             ctx.moveTo(f.x, f.y);
@@ -189,7 +194,7 @@
         ctx.fill();
         for (let f of flakes) {
             f.y += f.d;
-            f.x += Math.sin(f.y * 0.01) * 0.5;
+            f.x += Math.sin(f.y * 0.01) * 0.6;
             if (f.y > h) { f.y = -5; f.x = Math.random() * w; }
         }
         requestAnimationFrame(drawSnow);
