@@ -8,7 +8,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;user-select:none;-webkit-tap-highlight-color:transparent}
 body{background:#1c1917 url('83059cadf5a9f1190c93dee7fc6f2dbe.jpg') center/cover no-repeat;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.card{background:rgba(255,250,240,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(253,230,138,.85);border-radius:26px;padding:24px 20px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 45px rgba(28,25,23,.45);position:relative;overflow:hidden}
+.card{background:rgba(255,250,240,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(253,230,138,.85);border-radius:26px;padding:24px 20px;width:100%;max-width:360px;text-align:center;box-shadow:0 20px 45px rgba(28,25,23,.45)}
 .shake{animation:sh .35s ease}
 @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .top{position:relative;width:230px;height:100px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center}
@@ -44,8 +44,55 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .row{display:flex;gap:8px;margin-top:16px}
 .bred{background:#fecaca;color:#991b1b;border:1px solid #fca5a5}
 </style>
+<script>
+var k=0,m=parseInt(localStorage.getItem('m15')||'0'),u=JSON.parse(localStorage.getItem('u15')||'[]');
+function updM(){
+  if(document.getElementById('m1'))document.getElementById('m1').innerText=m;
+  if(document.getElementById('m2'))document.getElementById('m2').innerText=m;
+  if(document.getElementById('cnt'))document.getElementById('cnt').innerText=u.length;
+  localStorage.setItem('m15',m);
+}
+function go(v){
+  ['v1','v2','v3','v4','v5'].forEach(function(id){document.getElementById(id).style.display=(id===v)?'block':'none';});
+  updM();
+  if(v==='v3'){
+    var h='';
+    for(var i=1;i<=15;i++){
+      var op=u.indexOf(i)>-1,rk=i<=7?0:(i<=12?1:2),nm=rk===0?'Обычный':(rk===1?'Редкий':'Легендарный');
+      h+='<div class="gi '+(op?'':'lk')+'"><img src="s'+i+'.jpg">'+(op?'':'<div class="qm">?</div>')+'<div class="gt r'+rk+'">'+nm+'</div></div>';
+    }
+    document.getElementById('gr').innerHTML=h;
+  }
+}
+function tap(){
+  m++;updM();
+  if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');
+}
+function wipe(){
+  m=0;u=[];
+  localStorage.setItem('m15','0');localStorage.setItem('u15','[]');
+  document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';
+  document.getElementById('mr').innerText='✨ Прогресс сброшен!';
+  go('v2');
+}
+function roll(){
+  var b=document.getElementById('rb');
+  if(b.disabled)return;
+  if(m<3){document.getElementById('mr').innerText='❌ Нужно 3 🪙! Покликай ещё';return;}
+  document.getElementById('mr').innerText='';
+  m-=3;updM();
+  var r=Math.random(),i=r<.6?Math.floor(Math.random()*7)+1:(r<.9?Math.floor(Math.random()*5)+8:Math.floor(Math.random()*3)+13);
+  var rk=i<=7?0:(i<=12?1:2),nm=rk===0?'Обычный':(rk===1?'Редкий':'Легендарный');
+  if(u.indexOf(i)<0){u.push(i);localStorage.setItem('u15',JSON.stringify(u));}
+  updM();
+  var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');
+  document.getElementById('sl').innerHTML='<img src="s'+i+'.jpg"><div class="tag r'+rk+'">'+nm+'</div>';
+  b.disabled=true;var t=3;b.innerText='⏳ Подождите '+t+'с...';
+  var iv=setInterval(function(){t--;if(t>0){b.innerText='⏳ Подождите '+t+'с...';}else{clearInterval(iv);b.disabled=false;b.innerText='🃏 Открыть за 3 🪙';}},1000);
+}
+</script>
 </head>
-<body onload="window.k=0;window.m=parseInt(localStorage.getItem('m15')||'0');window.u=JSON.parse(localStorage.getItem('u15')||'[]');if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}window.updM=function(){['m1','m2'].forEach(function(id){document.getElementById(id).innerText=window.m;});localStorage.setItem('m15',window.m);};window.updM();window.tap=function(){window.m++;window.updM();if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.impactOccurred('light');};window.go=function(v){['v1','v2','v3','v4','v5'].forEach(function(id){document.getElementById(id).style.display=id===v?'block':'none';});document.getElementById('cnt').innerText=window.u.length;window.updM();if(v==='v3'){var h='';for(var i=1;i<=15;i++){var op=window.u.indexOf(i)>-1,rk=i<=7?0:(i<=12?1:2),nm=rk===0?'Обычный':(rk===1?'Редкий':'Легендарный');h+='<div class=\'gi '+(op?'':'lk')+'\'><img src=\'s'+i+'.jpg\'>'+(op?'':'<div class=\'qm\'>?</div>')+'<div class=\'gt r'+rk+'\'>'+nm+'</div></div>';}document.getElementById('gr').innerHTML=h;}};window.wipe=function(){window.m=0;window.u=[];localStorage.setItem('m15','0');localStorage.setItem('u15','[]');document.getElementById('sl').innerHTML='<span style=\'font-size:44px\'>🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';window.go('v2');};window.roll=function(){var b=document.getElementById('rb');if(b.disabled)return;if(window.m<3){document.getElementById('mr').innerText='❌ Нужно 3 🪙! Покликай ещё';return;}document.getElementById('mr').innerText='';window.m-=3;window.updM();var r=Math.random(),i=r<.6?Math.floor(Math.random()*7)+1:(r<.9?Math.floor(Math.random()*5)+8:Math.floor(Math.random()*3)+13),rk=i<=7?0:(i<=12?1:2),nm=rk===0?'Обычный':(rk===1?'Редкий':'Легендарный');if(window.u.indexOf(i)<0){window.u.push(i);localStorage.setItem('u15',JSON.stringify(window.u));}document.getElementById('cnt').innerText=window.u.length;var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');document.getElementById('sl').innerHTML='<img src=\'s'+i+'.jpg\'><div class=\'tag r'+rk+'\'>'+nm+'</div>';b.disabled=true;var t=3;b.innerText='⏳ Подождите '+t+'с...';var iv=setInterval(function(){t--;if(t>0){b.innerText='⏳ Подождите '+t+'с...';}else{clearInterval(iv);b.disabled=false;b.innerText='🃏 Открыть за 3 🪙';}},1000);};setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
+<body onload="updM();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
 <svg style="display:none"><symbol id="sf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1M12 5l-2.5-2.5M12 5l2.5-2.5M12 19l-2.5 2.5M12 19l2.5 2.5M5 12l-2.5-2.5M5 12l-2.5 2.5M19 12l2.5-2.5M19 12l2.5 2.5"/></symbol><symbol id="st" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></symbol></svg>
 <div class="card" id="c">
 <div id="v1">
@@ -63,15 +110,15 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 <div class="name"><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg><h1>@Empty23AM</h1><svg style="width:20px;height:20px;color:#c99a62"><use href="#sf"/></svg></div>
 <p>Зимний автоответчик.<br>Напиши в чат или кинь снежок прямо здесь.</p>
 <div class="tbox"><div class="tt">⏳ До Нового года</div><div class="tv" id="cd">43д 11ч 00м 00с</div></div>
-<button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)window.k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+window.k+')':'⛄️ Промах! В сугроб ('+window.k+')'">⛄️ Бросить снежок</button>
-<button class="btn b2" onclick="window.go('v4')">🎮 Мини-игра</button>
+<button class="btn b1" onclick="var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');var ok=Math.random()<.5;if(ok)k++;document.getElementById('r').innerText=ok?'☃️ Прямое попадание! ('+k+')':'⛄️ Промах! В сугроб ('+k+')'">⛄️ Бросить снежок</button>
+<button class="btn b2" onclick="go('v4')">🎮 Мини-игра</button>
 <button class="btn b2" onclick="if(window.Telegram&&Telegram.WebApp)Telegram.WebApp.close()">✉️ Написать сообщение</button>
 <div class="res" id="r"></div>
 </div>
 <div id="v4" style="display:none">
-<div class="hd"><button class="sm" onclick="window.go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div>
+<div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><span class="bal">🪙 <span id="m1">0</span></span></div>
 <p style="margin-bottom:4px">Кликай по котику, чтобы копить монетки!</p>
-<div class="clk" onclick="window.tap()"><img src="click.jpg"></div>
-<button class="btn b1" onclick="window.go('v2')">🃏 Открыть карточки (3 🪙)</button>
+<div class="clk" onclick="tap()"><img src="click.jpg"></div>
+<button class="btn b1" onclick="go('v2')">🃏 Открыть карточки (3 🪙)</button>
 </div>
 <div id="v2" style="display:none">
