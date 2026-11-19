@@ -17,7 +17,7 @@ body{background:#1c1917 url('83059cadf5a9f1190c93dee7fc6f2dbe.jpg') center/cover
 @keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
 .top{position:relative;width:230px;height:100px;margin:0 auto 8px;display:flex;align-items:center;justify-content:center}
 .ava{width:90px;height:90px;border-radius:50%;overflow:hidden;border:3px solid #fde68a;box-shadow:0 8px 20px rgba(180,83,9,.2);z-index:2}
-.ava img,.slot img,.gi img,.clk img{width:100%;height:100%;object-fit:cover;display:block}
+.ava img,.slot img,.gi img,.clk img,.cbox img{width:100%;height:100%;object-fit:cover;display:block}
 .dec{position:absolute;color:#c99a62;pointer-events:none}
 .name{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:4px}
 h1{font-size:21px;font-weight:700;color:#292524}
@@ -62,22 +62,28 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .at1{font-size:13px;font-weight:700;color:#292524}
 .at2{font-size:11px;color:#57534e;margin-top:2px}
 .abtn{padding:6px 10px;border-radius:10px;border:none;font-size:11px;font-weight:700;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;cursor:pointer;white-space:nowrap}
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0 12px}
+.cbox{aspect-ratio:1/1;border-radius:15px;border:2px solid #fde68a;background:linear-gradient(135deg,#fef3c7,#fde68a);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;color:#b45309;cursor:pointer;overflow:hidden;position:relative;box-shadow:0 4px 10px rgba(180,83,9,.15);transition:transform .12s}
+.cbox:active{transform:scale(.93)}
+.cbox.win{border:3px solid #16a34a;box-shadow:0 0 16px rgba(22,163,74,.55);transform:scale(1.04)}
+.cbox.dim{opacity:.55}
 </style>
 <script>
 var k=0,m=parseInt(localStorage.getItem('m15')||'0'),mx=parseInt(localStorage.getItem('mx15')||m),x2c=parseInt(localStorage.getItem('x2c')||'0'),slv=parseInt(localStorage.getItem('slv')||'0'),xlv=parseInt(localStorage.getItem('xlv')||'0'),alv=parseInt(localStorage.getItem('alv')||'0'),clv=parseInt(localStorage.getItem('clv')||'0'),eun=parseInt(localStorage.getItem('eun')||'0'),snd=localStorage.getItem('snd')!=='0',cur='v1';
-var u=JSON.parse(localStorage.getItem('u15')||'[]'),eu=JSON.parse(localStorage.getItem('eu9')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),cb=0,x2=0,rt=1,ct=1;
+var u=JSON.parse(localStorage.getItem('u15')||'[]'),eu=JSON.parse(localStorage.getItem('eu9')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),cb=0,x2=0,rt=1,ct=1,caid=0,cdone=0,cprizes=new Array();
 var PR=new Array(150,500,1000,1500),PR2=new Array(250,700,1000,1500),PRA=new Array(250,700,1000),AINC=new Array(0,1,2,5),PRC=new Array(500,1000,2000),CINC=new Array(1,2,3,5);
 var AC=[
-  {id:1,t:'🐾 Первые лапки',d:'Накопить 100 монет',r:25,ok:function(){return mx>=100;}},
-  {id:2,t:'💰 Кошачий магнат',d:'Накопить 250 монет',r:50,ok:function(){return mx>=250;}},
-  {id:3,t:'👑 Золотой запас',d:'Накопить 500 монет',r:100,ok:function(){return mx>=500;}},
-  {id:7,t:'💎 Тысячник',d:'Накопить 1000 монет',r:200,ok:function(){return mx>=1000;}},
-  {id:8,t:'🏦 Миллионер в душе',d:'Накопить 1500 монет',r:350,ok:function(){return mx>=1500;}},
-  {id:4,t:'🔥 Горячие лапки',d:'Активировать ×2 пять раз',r:40,ok:function(){return x2c>=5;}},
-  {id:5,t:'⚡ Комбо-мастер',d:'Активировать ×2 десять раз',r:80,ok:function(){return x2c>=10;}},
-  {id:6,t:'🏆 Повелитель котиков',d:'Собрать все 20 зимних карточек',r:250,ok:function(){return u.length>=20;}},
-  {id:9,t:'🚀 Космический билет',d:'Открыть космический раздел',r:400,ok:function(){return eun===1;}},
-  {id:10,t:'🌌 Покоритель галактики',d:'Собрать всех 10 космических котов',r:1000,ok:function(){return eu.length>=10;}}
+  {id:1,t:'🐾 Первые лапки',d:'Накопить 100 монет',r:25,ch:0,ok:function(){return mx>=100;}},
+  {id:2,t:'💰 Кошачий магнат',d:'Накопить 250 монет',r:0,ch:1,ok:function(){return mx>=250;}},
+  {id:3,t:'👑 Золотой запас',d:'Накопить 500 монет',r:100,ch:0,ok:function(){return mx>=500;}},
+  {id:7,t:'💎 Тысячник',d:'Накопить 1000 монет',r:0,ch:1,ok:function(){return mx>=1000;}},
+  {id:8,t:'🏦 Миллионер в душе',d:'Накопить 1500 монет',r:350,ch:0,ok:function(){return mx>=1500;}},
+  {id:4,t:'🔥 Горячие лапки',d:'Активировать ×2 пять раз',r:40,ch:0,ok:function(){return x2c>=5;}},
+  {id:5,t:'⚡ Комбо-мастер',d:'Активировать ×2 десять раз',r:0,ch:1,ok:function(){return x2c>=10;}},
+  {id:11,t:'💥 Повелитель огня',d:'Активировать ×2 пятьдесят раз',r:0,ch:1,ok:function(){return x2c>=50;}},
+  {id:6,t:'🏆 Повелитель котиков',d:'Собрать все 20 зимних карточек',r:0,ch:1,ok:function(){return u.length>=20;}},
+  {id:9,t:'🚀 Космический билет',d:'Открыть космический раздел',r:0,ch:1,ok:function(){return eun===1;}},
+  {id:10,t:'🌌 Покоритель галактики',d:'Собрать всех 10 космических котов',r:1000,ch:0,ok:function(){return eu.length>=10;}}
 ];
 function chkA(){
   if(m>mx){mx=m;localStorage.setItem('mx15',mx);}
@@ -102,7 +108,7 @@ function togSnd(){snd=!snd;localStorage.setItem('snd',snd?'1':'0');updSnd();}
 document.addEventListener('visibilitychange',updSnd);
 function go(v){
   cur=v;
-  ['v1','v2','v3','v4','v5','v6','v7','v8'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=(id===v)?'block':'none';});
+  ['v1','v2','v3','v4','v5','v6','v7','v8','v9'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=(id===v)?'block':'none';});
   var topOn=(v==='v2'||v==='v3'||v==='v4');
   if(document.getElementById('achb'))document.getElementById('achb').style.display=topOn?'flex':'none';
   if(document.getElementById('shpb'))document.getElementById('shpb').style.display=topOn?'flex':'none';
@@ -113,7 +119,9 @@ function go(v){
     var ah='';
     AC.forEach(function(a){
       var ok=a.ok(),got=cl.indexOf(a.id)>-1;
-      var st=got?'<span style="font-size:11px;font-weight:700;color:#16a34a">✅ Получено</span>':(ok?'<button class="abtn" onclick="claim('+a.id+','+a.r+')">+'+a.r+' 🪙</button>':'<span style="font-size:11px;color:#a8a29e">🔒 +'+a.r+' 🪙</span>');
+      var lb=a.ch?'🎁 Сундук':('+'+a.r+' 🪙');
+      var fn=a.ch?('openCh('+a.id+')'):('claim('+a.id+','+a.r+')');
+      var st=got?'<span style="font-size:11px;font-weight:700;color:#16a34a">✅ Получено</span>':(ok?'<button class="abtn" onclick="'+fn+'">'+lb+'</button>':'<span style="font-size:11px;color:#a8a29e">🔒 '+lb+'</span>');
       ah+='<div class="ait '+(ok?'dn':'')+'"><div><div class="at1">'+a.t+'</div><div class="at2">'+a.d+'</div></div>'+st+'</div>';
     });
     document.getElementById('al').innerHTML=ah;
@@ -161,6 +169,59 @@ function ctab(n){
     h+='<div class="gi '+(op?'':'lk')+'" '+(op?'onclick="big(\''+pf+i+'.jpg\','+rk+',\''+nm+'\')"':'')+'><img src="'+pf+i+'.jpg">'+(op?'':'<div class="qm">?</div>')+'<div class="gt r'+rk+'">'+nm+'</div></div>';
   }
   document.getElementById('gr').innerHTML=h;
+}
+function mkPrize(){
+  var coins=new Array(200,500,1000);
+  if(Math.random()<0.5){
+    var v=coins[Math.floor(Math.random()*3)];
+    return {tp:'m',v:v};
+  }
+  var miss=new Array();
+  for(var i=1;i<=20;i++)if(u.indexOf(i)<0)miss.push({pf:'s',i:i});
+  if(eun){for(var j=1;j<=10;j++)if(eu.indexOf(j)<0)miss.push({pf:'e',i:j});}
+  if(miss.length>0){
+    var c=miss[Math.floor(Math.random()*miss.length)];
+    return {tp:'c',pf:c.pf,i:c.i};
+  }
+  var top=new Array({pf:'s',i:13},{pf:'s',i:14},{pf:'s',i:15},{pf:'s',i:16},{pf:'s',i:17},{pf:'s',i:18},{pf:'s',i:19},{pf:'s',i:20});
+  if(eun){top.push({pf:'e',i:8},{pf:'e',i:9},{pf:'e',i:10});}
+  var tc=top[Math.floor(Math.random()*top.length)];
+  return {tp:'c',pf:tc.pf,i:tc.i};
+}
+function openCh(id){
+  if(cl.indexOf(id)>-1)return;
+  caid=id;cdone=0;cprizes=new Array();
+  var h='';
+  for(var idx=0;idx<6;idx++){
+    cprizes.push(mkPrize());
+    h+='<div class="cbox" id="cb'+idx+'" onclick="pickCh('+idx+')"><span style="font-size:28px">❓</span></div>';
+  }
+  document.getElementById('cgrid').innerHTML=h;
+  document.getElementById('cres').innerText='Выбери любую из 6 карточек!';
+  document.getElementById('cbtn2').style.display='none';
+  go('v9');
+}
+function pickCh(idx){
+  if(cdone)return;
+  cdone=1;
+  cl.push(caid);localStorage.setItem('cl15',JSON.stringify(cl));
+  var win=cprizes[idx];
+  if(win.tp==='m'){
+    m+=win.v;
+    document.getElementById('cres').innerText='🎉 Твой приз: +'+win.v+' 🪙!';
+  }else{
+    if(win.pf==='s'&&u.indexOf(win.i)<0){u.push(win.i);localStorage.setItem('u15',JSON.stringify(u));}
+    if(win.pf==='e'&&eu.indexOf(win.i)<0){eu.push(win.i);localStorage.setItem('eu9',JSON.stringify(eu));}
+    document.getElementById('cres').innerText='🎉 Твой приз: редкий котик!';
+  }
+  updM();
+  for(var j=0;j<6;j++){
+    var el=document.getElementById('cb'+j),p=cprizes[j];
+    el.className='cbox '+(j===idx?'win':'dim');
+    if(p.tp==='m'){el.innerHTML='<span style="font-size:20px">🪙</span><span style="font-size:13px">+'+p.v+'</span>';}
+    else{el.innerHTML='<img src="'+p.pf+p.i+'.jpg">';}
+  }
+  document.getElementById('cbtn2').style.display='block';
 }
 function stab(n){
   document.getElementById('st1').style.display=(n===1)?'flex':'none';
@@ -243,7 +304,7 @@ function roll(){
 </head>
 <body onload="updM();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
 <button class="shpb" id="shpb" onclick="go('v7')">🏪 Магазин</button>
-<button class="achb" id="achb" onclick="go('v6')">🏆 <span id="acnt">0</span>/10<span class="dot" id="adot">!</span></button>
+<button class="achb" id="achb" onclick="go('v6')">🏆 <span id="acnt">0</span>/11<span class="dot" id="adot">!</span></button>
 <svg style="display:none">
 <symbol id="sf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1M12 5l-2.5-2.5M12 5l2.5-2.5M12 19l-2.5 2.5M12 19l2.5 2.5M5 12l-2.5-2.5M5 12l-2.5 2.5M19 12l2.5-2.5M19 12l2.5 2.5"/></symbol>
 <symbol id="st" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></symbol>
@@ -342,6 +403,12 @@ function roll(){
 <button class="btn b1" id="sbtn2" onclick="togSnd()">🔊 Музыка: Включена</button>
 <button class="btn bred" style="margin-top:6px" onclick="go('v5')">🗑 Сбросить прогресс</button>
 </div>
+</div>
+<div id="v9" style="display:none">
+<div class="hd"><span style="font-size:14px;font-weight:700;color:#78350f">🎁 Наградной сундук</span></div>
+<div class="res" id="cres" style="margin-bottom:4px">Выбери любую из 6 карточек!</div>
+<div class="cgrid" id="cgrid"></div>
+<button class="btn b1" id="cbtn2" style="display:none" onclick="go('v6')">Забрать награду</button>
 </div>
 </div>
 <audio id="bg" src="music.mp3" loop></audio>
