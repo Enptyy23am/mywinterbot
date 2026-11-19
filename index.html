@@ -67,14 +67,10 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .cbox:active{transform:scale(.93)}
 .cbox.win{border:3px solid #16a34a;box-shadow:0 0 16px rgba(22,163,74,.55);transform:scale(1.04)}
 .cbox.dim{opacity:.55}
-.inp{flex:1;padding:9px 12px;border-radius:12px;border:1px solid #fde68a;background:#fff;font-size:14px;font-weight:700;color:#292524;text-transform:uppercase;outline:none;user-select:text;-webkit-user-select:text}
 </style>
 <script>
-var DB='https://firebaseio.com';
 var k=0,m=parseInt(localStorage.getItem('m15')||'0'),mx=parseInt(localStorage.getItem('mx15')||m),x2c=parseInt(localStorage.getItem('x2c')||'0'),slv=parseInt(localStorage.getItem('slv')||'0'),xlv=parseInt(localStorage.getItem('xlv')||'0'),alv=parseInt(localStorage.getItem('alv')||'0'),clv=parseInt(localStorage.getItem('clv')||'0'),eun=parseInt(localStorage.getItem('eun')||'0'),snd=localStorage.getItem('snd')!=='0',cur='v1';
-var u=JSON.parse(localStorage.getItem('u15')||'[]'),eu=JSON.parse(localStorage.getItem('eu9')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),fr=JSON.parse(localStorage.getItem('fr6')||'[]'),cb=0,x2=0,rt=1,ct=1,caid=0,cdone=0,cprizes=new Array();
-var uid=localStorage.getItem('uid6');
-if(!uid){uid=Math.random().toString(36).substring(2,8).toUpperCase();while(uid.length<6)uid+='X';localStorage.setItem('uid6',uid);}
+var u=JSON.parse(localStorage.getItem('u15')||'[]'),eu=JSON.parse(localStorage.getItem('eu9')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),cb=0,x2=0,rt=1,ct=1,caid=0,cdone=0,cprizes=new Array();
 var PR=new Array(150,500,1000,1500),PR2=new Array(250,700,1000,1500,2500,4000),PRA=new Array(250,700,1000,3000,5500),AINC=new Array(0,1,2,5,7,10),PRC=new Array(500,1000,2000,3000,5500),CINC=new Array(1,2,3,5,7,10);
 var AC=[
   {id:1,t:'🐾 Первые лапки',d:'Накопить 100 монет',r:25,ch:0,ok:function(){return mx>=100;}},
@@ -89,48 +85,6 @@ var AC=[
   {id:9,t:'🚀 Космический билет',d:'Открыть космический раздел',r:0,ch:1,ok:function(){return eun===1;}},
   {id:10,t:'🌌 Покоритель галактики',d:'Собрать всех 10 космических котов',r:1000,ch:0,ok:function(){return eu.length>=10;}}
 ];
-function myName(){
-  try{var usr=Telegram.WebApp.initDataUnsafe.user;if(usr)return usr.username?('@'+usr.username):(usr.first_name||'Котик');}catch(e){}
-  return 'Игрок #'+uid.slice(0,3);
-}
-function syncDB(){
-  fetch(DB+'/users/'+uid+'.json',{method:'PUT',body:JSON.stringify({nm:myName(),m:m,c:(u.length+eu.length)})}).catch(function(){});
-}
-function copyID(){
-  if(navigator.clipboard)navigator.clipboard.writeText(uid).catch(function(){});
-  document.getElementById('fmsg').innerText='✅ Твой ID '+uid+' скопирован!';
-}
-function addFr(){
-  var inp=document.getElementById('finp'),code=inp.value.trim().toUpperCase();
-  if(code.length!==6){document.getElementById('fmsg').innerText='❌ Введи ровно 6 символов!';return;}
-  if(code===uid){document.getElementById('fmsg').innerText='❌ Нельзя добавить самого себя!';return;}
-  if(fr.indexOf(code)>-1){document.getElementById('fmsg').innerText='⚠️ Этот друг уже в списке!';return;}
-  document.getElementById('fmsg').innerText='⏳ Ищем игрока...';
-  fetch(DB+'/users/'+code+'.json').then(function(r){return r.json();}).then(function(d){
-    if(!d){document.getElementById('fmsg').innerText='❌ Игрок с ID '+code+' не найден!';return;}
-    fr.push(code);localStorage.setItem('fr6',JSON.stringify(fr));
-    inp.value='';document.getElementById('fmsg').innerText='🎉 Друг '+d.nm+' добавлен!';
-    loadFr();
-  }).catch(function(){document.getElementById('fmsg').innerText='❌ Ошибка сети!';});
-}
-function delFr(code){
-  fr=fr.filter(function(x){return x!==code;});
-  localStorage.setItem('fr6',JSON.stringify(fr));loadFr();
-}
-function loadFr(){
-  var box=document.getElementById('flist');
-  if(fr.length===0){box.innerHTML='<p style="margin:12px 0">Пока нет друзей. Скопируй свой ID и обменяйся с друзьями!</p>';return;}
-  box.innerHTML='<p style="margin:8px 0">⏳ Загрузка друзей...</p>';
-  Promise.all(fr.map(function(id){return fetch(DB+'/users/'+id+'.json').then(function(r){return r.json();}).then(function(d){return {id:id,d:d};}).catch(function(){return {id:id,d:null};});})).then(function(res){
-    var h='';
-    res.forEach(function(it){
-      var nm=it.d?it.d.nm:('ID: '+it.id);
-      var st=it.d?('🪙 '+it.d.m+' • 🗂 '+it.d.c+'/30'):'Нет данных';
-      h+='<div class="ait dn"><div><div class="at1">'+nm+' <span style="font-size:10px;color:#b45309">#'+it.id+'</span></div><div class="at2">'+st+'</div></div><button class="sm" style="color:#991b1b" onclick="delFr(\''+it.id+'\')">✕</button></div>';
-    });
-    box.innerHTML=h;
-  });
-}
 function chkA(){
   if(m>mx){mx=m;localStorage.setItem('mx15',mx);}
   var dn=0,nw=0;
@@ -154,15 +108,13 @@ function togSnd(){snd=!snd;localStorage.setItem('snd',snd?'1':'0');updSnd();}
 document.addEventListener('visibilitychange',updSnd);
 function go(v){
   cur=v;
-  ['v1','v2','v3','v4','v5','v6','v7','v8','v9','v10'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=(id===v)?'block':'none';});
+  ['v1','v2','v3','v4','v5','v6','v7','v8','v9'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display=(id===v)?'block':'none';});
   var topOn=(v==='v2'||v==='v3'||v==='v4');
   if(document.getElementById('achb'))document.getElementById('achb').style.display=topOn?'flex':'none';
   if(document.getElementById('shpb'))document.getElementById('shpb').style.display=topOn?'flex':'none';
   updSnd();updM();
-  if(v==='v4'||v==='v10')syncDB();
   if(v==='v2')rtab(rt);
   if(v==='v3')ctab(ct);
-  if(v==='v10'){document.getElementById('myid').innerText=uid;document.getElementById('fmsg').innerText='';loadFr();}
   if(v==='v6'){
     var ah='';
     AC.forEach(function(a){
@@ -262,7 +214,7 @@ function pickCh(idx){
     if(win.pf==='e'&&eu.indexOf(win.i)<0){eu.push(win.i);localStorage.setItem('eu9',JSON.stringify(eu));}
     document.getElementById('cres').innerText='🎉 Твой приз: редкий котик!';
   }
-  updM();syncDB();
+  updM();
   for(var j=0;j<6;j++){
     var el=document.getElementById('cb'+j),p=cprizes[j];
     el.className='cbox '+(j===idx?'win':'dim');
@@ -304,7 +256,7 @@ function buyS(){if(slv>=4)return;var p=PR[slv];if(m<p){document.getElementById('
 function buyX(){if(xlv>=6)return;var p=PR2[xlv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;xlv++;localStorage.setItem('xlv',xlv);updM();updS();document.getElementById('smsg').innerText='🔥 Время режима ×2 увеличено!';}
 function buyC(){if(clv>=5)return;var p=PRC[clv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;clv++;localStorage.setItem('clv',clv);updM();updS();document.getElementById('smsg').innerText='🐾 Сила клика увеличена!';}
 function buyA(){if(alv>=5)return;var p=PRA[alv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;alv++;localStorage.setItem('alv',alv);updM();updS();document.getElementById('smsg').innerText='💤 Сонный помощник прокачан!';}
-function claim(id,r){if(cl.indexOf(id)>-1)return;cl.push(id);localStorage.setItem('cl15',JSON.stringify(cl));m+=r;updM();syncDB();go('v6');}
+function claim(id,r){if(cl.indexOf(id)>-1)return;cl.push(id);localStorage.setItem('cl15',JSON.stringify(cl));m+=r;updM();go('v6');}
 function big(src,rk,nm){var o=document.getElementById('ov');o.innerHTML='<img src="'+src+'"><div class="tag r'+rk+'" style="position:static;margin-top:14px;font-size:14px;padding:6px 16px">'+nm+'</div><p style="color:#fde68a;margin-top:12px">Нажми в любое место, чтобы закрыть</p>';o.style.display='flex';}
 function tap(e){
   updSnd();
@@ -322,7 +274,7 @@ setInterval(function(){
   else{if(cb>0)cb=Math.max(0,cb-2);if(document.getElementById('cbt'))document.getElementById('cbt').innerText=cb>0?'Комбо: '+cb+'%':'Кликай быстро для ×2!';}
   if(document.getElementById('cbf'))document.getElementById('cbf').style.width=cb+'%';
 },100);
-function wipe(){m=0;mx=0;x2c=0;slv=0;xlv=0;alv=0;clv=0;eun=0;u=[];eu=[];cl=[];localStorage.setItem('m15','0');localStorage.setItem('mx15','0');localStorage.setItem('x2c','0');localStorage.setItem('slv','0');localStorage.setItem('xlv','0');localStorage.setItem('alv','0');localStorage.setItem('clv','0');localStorage.setItem('eun','0');localStorage.setItem('u15','[]');localStorage.setItem('eu9','[]');localStorage.setItem('cl15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';rt=1;ct=1;syncDB();go('v4');}
+function wipe(){m=0;mx=0;x2c=0;slv=0;xlv=0;alv=0;clv=0;eun=0;u=[];eu=[];cl=[];localStorage.setItem('m15','0');localStorage.setItem('mx15','0');localStorage.setItem('x2c','0');localStorage.setItem('slv','0');localStorage.setItem('xlv','0');localStorage.setItem('alv','0');localStorage.setItem('clv','0');localStorage.setItem('eun','0');localStorage.setItem('u15','[]');localStorage.setItem('eu9','[]');localStorage.setItem('cl15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';rt=1;ct=1;go('v4');}
 function roll(){
   var b=document.getElementById('rb');if(b.disabled)return;
   var cost=(rt===1)?3:50;
@@ -341,7 +293,7 @@ function roll(){
     if(eu.indexOf(i)<0){eu.push(i);localStorage.setItem('eu9',JSON.stringify(eu));}
   }
   var nm=rk===0?'Обычный':(rk===1?'Редкий':(rk===2?'Легендарный':'Мифический'));
-  updM();syncDB();
+  updM();
   var c=document.getElementById('c');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');
   document.getElementById('sl').innerHTML='<img src="'+pf+i+'.jpg"><div class="tag r'+rk+'">'+nm+'</div>';
   b.disabled=true;var t=Math.round((3-slv*0.5)*10);
@@ -350,7 +302,7 @@ function roll(){
 }
 </script>
 </head>
-<body onload="updM();syncDB();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
+<body onload="updM();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
 <button class="shpb" id="shpb" onclick="go('v7')">🏪 Магазин</button>
 <button class="achb" id="achb" onclick="go('v6')">🏆 <span id="acnt">0</span>/11<span class="dot" id="adot">!</span></button>
 <svg style="display:none">
@@ -373,7 +325,7 @@ function roll(){
 <div class="res" id="r"></div>
 </div>
 <div id="v4" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><div style="display:flex;gap:4px"><button class="sm" onclick="go('v10')">👥</button><button class="sm" onclick="go('v8')">⚙️</button></div><span class="bal">🪙 <span id="m1">0</span></span></div>
+<div class="hd"><button class="sm" onclick="go('v1')">← Назад</button><button class="sm" onclick="go('v8')">⚙️ Настройки</button><span class="bal">🪙 <span id="m1">0</span></span></div>
 <div class="cbw"><div class="cbf" id="cbf"></div></div>
 <div class="cbt" id="cbt">Кликай быстро для ×2!</div>
 <div class="clk" onclick="tap(event)"><img src="click.jpg"></div>
@@ -457,19 +409,6 @@ function roll(){
 <div class="res" id="cres" style="margin-bottom:4px">Выбери любую из 6 карточек!</div>
 <div class="cgrid" id="cgrid"></div>
 <button class="btn b1" id="cbtn2" style="display:none" onclick="go('v6')">Забрать награду</button>
-</div>
-<div id="v10" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v4')">← В кликер</button><span style="font-size:13px;font-weight:700;color:#78350f">👥 Друзья</span></div>
-<div class="ait dn" style="margin-bottom:10px">
-<div><div class="at2">Твой 6-значный ID:</div><div class="at1" id="myid" style="font-size:16px;letter-spacing:1.5px">------</div></div>
-<button class="abtn" onclick="copyID()">📋 Копировать</button>
-</div>
-<div style="display:flex;gap:6px;margin-bottom:8px">
-<input class="inp" id="finp" maxlength="6" placeholder="ID друга (6 симв.)">
-<button class="abtn" style="padding:0 14px;font-size:16px" onclick="addFr()">➕</button>
-</div>
-<div class="res" id="fmsg" style="margin-bottom:6px"></div>
-<div class="alist" id="flist" style="max-height:210px"></div>
 </div>
 </div>
 <audio id="bg" src="music.mp3" loop></audio>
