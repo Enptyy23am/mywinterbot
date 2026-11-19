@@ -71,7 +71,7 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 <script>
 var k=0,m=parseInt(localStorage.getItem('m15')||'0'),mx=parseInt(localStorage.getItem('mx15')||m),x2c=parseInt(localStorage.getItem('x2c')||'0'),slv=parseInt(localStorage.getItem('slv')||'0'),xlv=parseInt(localStorage.getItem('xlv')||'0'),alv=parseInt(localStorage.getItem('alv')||'0'),clv=parseInt(localStorage.getItem('clv')||'0'),eun=parseInt(localStorage.getItem('eun')||'0'),snd=localStorage.getItem('snd')!=='0',cur='v1';
 var u=JSON.parse(localStorage.getItem('u15')||'[]'),eu=JSON.parse(localStorage.getItem('eu9')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),cb=0,x2=0,rt=1,ct=1,caid=0,cdone=0,cprizes=new Array();
-var PR=new Array(150,500,1000,1500),PR2=new Array(250,700,1000,1500),PRA=new Array(250,700,1000),AINC=new Array(0,1,2,5),PRC=new Array(500,1000,2000),CINC=new Array(1,2,3,5);
+var PR=new Array(150,500,1000,1500),PR2=new Array(250,700,1000,1500,2500,4000),PRA=new Array(250,700,1000,3000,5500),AINC=new Array(0,1,2,5,7,10),PRC=new Array(500,1000,2000,3000,5500),CINC=new Array(1,2,3,5,7,10);
 var AC=[
   {id:1,t:'🐾 Первые лапки',d:'Накопить 100 монет',r:25,ch:0,ok:function(){return mx>=100;}},
   {id:2,t:'💰 Кошачий магнат',d:'Накопить 250 монет',r:0,ch:1,ok:function(){return mx>=250;}},
@@ -236,26 +236,26 @@ function updS(){
   document.getElementById('scd').innerText=slv<4?(cd+'с → '+nx+'с'):'1.0с (Максимум)';
   var b=document.getElementById('sbtn');
   if(slv>=4){b.disabled=true;b.innerText='✅ Максимум';}else{b.disabled=false;b.innerText='Улучшить за '+PR[slv]+' 🪙';}
-  var xd=(5+xlv*0.5).toFixed(1),xnx=xlv<4?(5+(xlv+1)*0.5).toFixed(1):'7.0';
-  document.getElementById('xlv').innerText=xlv+'/4';
-  document.getElementById('xcd').innerText=xlv<4?(xd+'с → '+xnx+'с'):'7.0с (Максимум)';
+  var xd=(5+xlv*0.5).toFixed(1),xnx=xlv<6?(5+(xlv+1)*0.5).toFixed(1):'8.0';
+  document.getElementById('xlv').innerText=xlv+'/6';
+  document.getElementById('xcd').innerText=xlv<6?(xd+'с → '+xnx+'с'):'8.0с (Максимум)';
   var xb=document.getElementById('xbtn');
-  if(xlv>=4){xb.disabled=true;xb.innerText='✅ Максимум';}else{xb.disabled=false;xb.innerText='Улучшить за '+PR2[xlv]+' 🪙';}
-  var curC=CINC[clv],nxC=clv<3?CINC[clv+1]:5;
-  document.getElementById('clv').innerText=clv+'/3';
-  document.getElementById('ccd').innerText=clv<3?('+'+curC+' → +'+nxC+' 🪙 (в ×2: +'+(nxC*2)+')'):'+5 🪙 (в ×2: +10)';
+  if(xlv>=6){xb.disabled=true;xb.innerText='✅ Максимум';}else{xb.disabled=false;xb.innerText='Улучшить за '+PR2[xlv]+' 🪙';}
+  var curC=CINC[clv],nxC=clv<5?CINC[clv+1]:10;
+  document.getElementById('clv').innerText=clv+'/5';
+  document.getElementById('ccd').innerText=clv<5?('+'+curC+' → +'+nxC+' 🪙 (в ×2: +'+(nxC*2)+')'):'+10 🪙 (в ×2: +20)';
   var cb2=document.getElementById('cbtn');
-  if(clv>=3){cb2.disabled=true;cb2.innerText='✅ Максимум';}else{cb2.disabled=false;cb2.innerText='Улучшить за '+PRC[clv]+' 🪙';}
-  var curA=AINC[alv],nxA=alv<3?AINC[alv+1]:5;
-  document.getElementById('alv').innerText=alv+'/3';
-  document.getElementById('acd').innerText=alv<3?('+'+curA+' → +'+nxA+' 🪙/сек'):'+5 🪙/сек (Максимум)';
+  if(clv>=5){cb2.disabled=true;cb2.innerText='✅ Максимум';}else{cb2.disabled=false;cb2.innerText='Улучшить за '+PRC[clv]+' 🪙';}
+  var curA=AINC[alv],nxA=alv<5?AINC[alv+1]:10;
+  document.getElementById('alv').innerText=alv+'/5';
+  document.getElementById('acd').innerText=alv<5?('+'+curA+' → +'+nxA+' 🪙/сек'):'+10 🪙/сек (Максимум)';
   var ab=document.getElementById('abtn');
-  if(alv>=3){ab.disabled=true;ab.innerText='✅ Максимум';}else{ab.disabled=false;ab.innerText='Улучшить за '+PRA[alv]+' 🪙';}
+  if(alv>=5){ab.disabled=true;ab.innerText='✅ Максимум';}else{ab.disabled=false;ab.innerText='Улучшить за '+PRA[alv]+' 🪙';}
 }
 function buyS(){if(slv>=4)return;var p=PR[slv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;slv++;localStorage.setItem('slv',slv);updM();updS();document.getElementById('smsg').innerText='⚡ Таймер рулетки ускорен!';}
-function buyX(){if(xlv>=4)return;var p=PR2[xlv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;xlv++;localStorage.setItem('xlv',xlv);updM();updS();document.getElementById('smsg').innerText='🔥 Время режима ×2 увеличено!';}
-function buyC(){if(clv>=3)return;var p=PRC[clv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;clv++;localStorage.setItem('clv',clv);updM();updS();document.getElementById('smsg').innerText='🐾 Сила клика увеличена!';}
-function buyA(){if(alv>=3)return;var p=PRA[alv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;alv++;localStorage.setItem('alv',alv);updM();updS();document.getElementById('smsg').innerText='💤 Сонный помощник прокачан!';}
+function buyX(){if(xlv>=6)return;var p=PR2[xlv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;xlv++;localStorage.setItem('xlv',xlv);updM();updS();document.getElementById('smsg').innerText='🔥 Время режима ×2 увеличено!';}
+function buyC(){if(clv>=5)return;var p=PRC[clv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;clv++;localStorage.setItem('clv',clv);updM();updS();document.getElementById('smsg').innerText='🐾 Сила клика увеличена!';}
+function buyA(){if(alv>=5)return;var p=PRA[alv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;alv++;localStorage.setItem('alv',alv);updM();updS();document.getElementById('smsg').innerText='💤 Сонный помощник прокачан!';}
 function claim(id,r){if(cl.indexOf(id)>-1)return;cl.push(id);localStorage.setItem('cl15',JSON.stringify(cl));m+=r;updM();go('v6');}
 function big(src,rk,nm){var o=document.getElementById('ov');o.innerHTML='<img src="'+src+'"><div class="tag r'+rk+'" style="position:static;margin-top:14px;font-size:14px;padding:6px 16px">'+nm+'</div><p style="color:#fde68a;margin-top:12px">Нажми в любое место, чтобы закрыть</p>';o.style.display='flex';}
 function tap(e){
@@ -369,7 +369,7 @@ function roll(){
 <div class="tabs"><button class="tab act" id="tb1" onclick="stab(1)">⚡ Прокачка</button><button class="tab" id="tb2" onclick="stab(2)">💤 Автокликер</button></div>
 <div class="alist" id="st1">
 <div class="ait dn" style="flex-direction:column;align-items:stretch;gap:6px;padding:11px">
-<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">🐾 Золотая лапка</span><span class="bal" id="clv">0/3</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">🐾 Золотая лапка</span><span class="bal" id="clv">0/5</span></div>
 <div class="at2">Увеличивает монеты за клик (в режиме ×2 удваивается).</div>
 <div style="font-size:12px;font-weight:700;color:#b45309">За клик: <span id="ccd">+1 → +2 🪙 (в ×2: +4)</span></div>
 <button class="btn b1" style="margin:0;padding:9px" id="cbtn" onclick="buyC()">Улучшить за 500 🪙</button>
@@ -381,15 +381,15 @@ function roll(){
 <button class="btn b1" style="margin:0;padding:9px" id="sbtn" onclick="buyS()">Улучшить за 150 🪙</button>
 </div>
 <div class="ait dn" style="flex-direction:column;align-items:stretch;gap:6px;padding:11px">
-<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">🔥 Долгий ×2</span><span class="bal" id="xlv">0/4</span></div>
-<div class="at2">Продлевает режим ×2 на +0.5с (до 7.0с).</div>
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">🔥 Долгий ×2</span><span class="bal" id="xlv">0/6</span></div>
+<div class="at2">Продлевает режим ×2 на +0.5с (до 8.0с).</div>
 <div style="font-size:12px;font-weight:700;color:#b45309">Время ×2: <span id="xcd">5.0с → 5.5с</span></div>
 <button class="btn b1" style="margin:0;padding:9px" id="xbtn" onclick="buyX()">Улучшить за 250 🪙</button>
 </div>
 </div>
 <div class="alist" id="st2" style="display:none">
 <div class="ait dn" style="flex-direction:column;align-items:stretch;gap:8px;padding:14px">
-<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">🐾 Сонный помощник</span><span class="bal" id="alv">0/3</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">🐾 Сонный помощник</span><span class="bal" id="alv">0/5</span></div>
 <div class="at2">Пушистый кот сам собирает монетки каждую секунду, пока открыта игра.</div>
 <div style="font-size:13px;font-weight:700;color:#b45309">Доход: <span id="acd">+0 → +1 🪙/сек</span></div>
 <button class="btn b1" style="margin:0;padding:10px" id="abtn" onclick="buyA()">Улучшить за 250 🪙</button>
