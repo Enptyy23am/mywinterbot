@@ -171,7 +171,9 @@ function ctab(n){
   document.getElementById('ct1').className='tab'+(n===1?' act':'');
   document.getElementById('ct2').className='tab'+(n===2?' act':'');
   var h='',arr=(n===1)?u:eu,pf=(n===1)?'s':'e';
-  var ord=(n===1)?:;
+  var sOrd=new Array(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20);
+  var eOrd=new Array(1,2,3,4,11,12,13,14,15,5,6,7,8,9,10,16,17,18);
+  var ord=(n===1)?sOrd:eOrd;
   for(var idx=0;idx<ord.length;idx++){
     var i=ord[idx];
     var op=arr.indexOf(i)>-1,rk=(n===1)?(i<=7?0:(i<=12?1:(i<=17?2:3))):((i<=4||(i>=11&&i<=15))?0:(i<=7?1:2));
