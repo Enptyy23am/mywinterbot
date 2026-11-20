@@ -86,9 +86,10 @@ var AC=[
   {id:4,t:'🔥 Горячие лапки',d:'Активировать ×2 пять раз',r:40,ch:0,ok:function(){return x2c>=5;}},
   {id:5,t:'⚡ Комбо-мастер',d:'Активировать ×2 десять раз',r:0,ch:1,ok:function(){return x2c>=10;}},
   {id:11,t:'💥 Повелитель огня',d:'Активировать ×2 пятьдесят раз',r:0,ch:1,ok:function(){return x2c>=50;}},
+  {id:14,t:'🌈 Мифическая удача',d:'Получить своего первого мифического кота',r:0,ch:1,ok:function(){return u.indexOf(18)>-1||u.indexOf(19)>-1||u.indexOf(20)>-1;}},
   {id:6,t:'🏆 Повелитель котиков',d:'Собрать все 20 зимних карточек',r:0,ch:1,ok:function(){return u.length>=20;}},
   {id:9,t:'🚀 Космический билет',d:'Открыть космический раздел',r:0,ch:1,ok:function(){return eun===1;}},
-  {id:10,t:'🌌 Покоритель галактики',d:'Собрать всех 15 космических котов',r:1000,ch:0,ok:function(){return eu.length>=15;}},
+  {id:10,t:'🌌 Покоритель галактики',d:'Собрать всех 18 космических котов',r:1000,ch:0,ok:function(){return eu.length>=18;}},
   {id:12,t:'🎁 Ловец подарков',d:'Поймать 5 подарков возле кота',r:250,ch:0,ok:function(){return gc>=5;}},
   {id:13,t:'🎅 Охотник за подарками',d:'Поймать 10 подарков возле кота',r:0,ch:1,ok:function(){return gc>=10;}}
 ];
@@ -170,10 +171,10 @@ function ctab(n){
   document.getElementById('ct1').className='tab'+(n===1?' act':'');
   document.getElementById('ct2').className='tab'+(n===2?' act':'');
   var h='',arr=(n===1)?u:eu,pf=(n===1)?'s':'e';
-  var ord=(n===1)?[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]:[1,2,3,4,11,12,13,14,15,5,6,7,8,9,10];
+  var ord=(n===1)?:;
   for(var idx=0;idx<ord.length;idx++){
     var i=ord[idx];
-    var op=arr.indexOf(i)>-1,rk=(n===1)?(i<=7?0:(i<=12?1:(i<=17?2:3))):((i<=4||i>=11)?0:(i<=7?1:2));
+    var op=arr.indexOf(i)>-1,rk=(n===1)?(i<=7?0:(i<=12?1:(i<=17?2:3))):((i<=4||(i>=11&&i<=15))?0:(i<=7?1:2));
     var nm=rk===0?'Обычный':(rk===1?'Редкий':(rk===2?'Легендарный':'Мифический'));
     h+='<div class="gi '+(op?'':'lk')+'" '+(op?'onclick="big(\''+pf+i+'.jpg\','+rk+',\''+nm+'\')"':'')+'><img src="'+pf+i+'.jpg">'+(op?'':'<div class="qm">?</div>')+'<div class="gt r'+rk+'">'+nm+'</div></div>';
   }
@@ -187,13 +188,13 @@ function mkPrize(){
   }
   var miss=new Array();
   for(var i=1;i<=20;i++)if(u.indexOf(i)<0)miss.push({pf:'s',i:i});
-  if(eun){for(var j=1;j<=15;j++)if(eu.indexOf(j)<0)miss.push({pf:'e',i:j});}
+  if(eun){for(var j=1;j<=18;j++)if(eu.indexOf(j)<0)miss.push({pf:'e',i:j});}
   if(miss.length>0){
     var c=miss[Math.floor(Math.random()*miss.length)];
     return {tp:'c',pf:c.pf,i:c.i};
   }
   var top=new Array({pf:'s',i:13},{pf:'s',i:14},{pf:'s',i:15},{pf:'s',i:16},{pf:'s',i:17},{pf:'s',i:18},{pf:'s',i:19},{pf:'s',i:20});
-  if(eun){top.push({pf:'e',i:8},{pf:'e',i:9},{pf:'e',i:10});}
+  if(eun){top.push({pf:'e',i:8},{pf:'e',i:9},{pf:'e',i:10},{pf:'e',i:16},{pf:'e',i:17},{pf:'e',i:18});}
   var tc=top[Math.floor(Math.random()*top.length)];
   return {tp:'c',pf:tc.pf,i:tc.i};
 }
@@ -321,9 +322,9 @@ function roll(){
     if(u.indexOf(i)<0){u.push(i);localStorage.setItem('u15',JSON.stringify(u));}
   }else{
     pf='e';
-    var ec=new Array(1,2,3,4,11,12,13,14,15);
-    i=r<.55?ec[Math.floor(Math.random()*ec.length)]:(r<.87?Math.floor(Math.random()*3)+5:Math.floor(Math.random()*3)+8);
-    rk=(i<=4||i>=11)?0:(i<=7?1:2);
+    var ec0=new Array(1,2,3,4,11,12,13,14,15),ec2=new Array(8,9,10,16,17,18);
+    i=r<.55?ec0[Math.floor(Math.random()*ec0.length)]:(r<.87?Math.floor(Math.random()*3)+5:ec2[Math.floor(Math.random()*ec2.length)]);
+    rk=(i<=4||(i>=11&&i<=15))?0:(i<=7?1:2);
     if(eu.indexOf(i)<0){eu.push(i);localStorage.setItem('eu9',JSON.stringify(eu));}
   }
   var nm=rk===0?'Обычный':(rk===1?'Редкий':(rk===2?'Легендарный':'Мифический'));
@@ -338,7 +339,7 @@ function roll(){
 </head>
 <body onload="updM();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
 <button class="shpb" id="shpb" onclick="go('v7')">🏪 Магазин</button>
-<button class="achb" id="achb" onclick="go('v6')">🏆 <span id="acnt">0</span>/13<span class="dot" id="adot">!</span></button>
+<button class="achb" id="achb" onclick="go('v6')">🏆 <span id="acnt">0</span>/14<span class="dot" id="adot">!</span></button>
 <svg style="display:none">
 <symbol id="sf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 2v20M2 12h20M4.9 4.9l14.2 14.2M19.1 4.9L4.9 19.1M12 5l-2.5-2.5M12 5l2.5-2.5M12 19l-2.5 2.5M12 19l2.5 2.5M5 12l-2.5-2.5M5 12l-2.5 2.5M19 12l2.5-2.5M19 12l2.5 2.5"/></symbol>
 <symbol id="st" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 3l2.2 6.8L21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2z"/></symbol>
@@ -366,7 +367,7 @@ function roll(){
 <button class="btn b1" onclick="go('v2')">🃏 Открыть карточки</button>
 </div>
 <div id="v2" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/35</button></div>
+<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/38</button></div>
 <div class="tabs"><button class="tab act" id="rt1" onclick="rtab(1)">🎄 Зимние</button><button class="tab" id="rt2" onclick="rtab(2)">🌌 Космос</button></div>
 <div id="rbox">
 <div class="slot" id="sl"><span style="font-size:44px">🎁</span></div>
@@ -382,7 +383,7 @@ function roll(){
 </div>
 <div id="v3" style="display:none">
 <div class="hd"><button class="sm" onclick="go('v2')">← В игру</button><span style="font-size:13px;font-weight:700;color:#78350f">Коллекция</span></div>
-<div class="tabs"><button class="tab act" id="ct1" onclick="ctab(1)">🎄 Зимние (20)</button><button class="tab" id="ct2" onclick="ctab(2)">🌌 Космос (15)</button></div>
+<div class="tabs"><button class="tab act" id="ct1" onclick="ctab(1)">🎄 Зимние (20)</button><button class="tab" id="ct2" onclick="ctab(2)">🌌 Космос (18)</button></div>
 <div class="grid" id="gr"></div>
 </div>
 <div id="v5" style="display:none;padding:12px 4px">
