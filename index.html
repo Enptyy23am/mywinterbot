@@ -88,7 +88,7 @@ var AC=[
   {id:11,t:'💥 Повелитель огня',d:'Активировать ×2 пятьдесят раз',r:0,ch:1,ok:function(){return x2c>=50;}},
   {id:6,t:'🏆 Повелитель котиков',d:'Собрать все 20 зимних карточек',r:0,ch:1,ok:function(){return u.length>=20;}},
   {id:9,t:'🚀 Космический билет',d:'Открыть космический раздел',r:0,ch:1,ok:function(){return eun===1;}},
-  {id:10,t:'🌌 Покоритель галактики',d:'Собрать всех 10 космических котов',r:1000,ch:0,ok:function(){return eu.length>=10;}},
+  {id:10,t:'🌌 Покоритель галактики',d:'Собрать всех 15 космических котов',r:1000,ch:0,ok:function(){return eu.length>=15;}},
   {id:12,t:'🎁 Ловец подарков',d:'Поймать 5 подарков возле кота',r:250,ch:0,ok:function(){return gc>=5;}},
   {id:13,t:'🎅 Охотник за подарками',d:'Поймать 10 подарков возле кота',r:0,ch:1,ok:function(){return gc>=10;}}
 ];
@@ -169,9 +169,9 @@ function ctab(n){
   ct=n;
   document.getElementById('ct1').className='tab'+(n===1?' act':'');
   document.getElementById('ct2').className='tab'+(n===2?' act':'');
-  var h='',tot=(n===1)?20:10,arr=(n===1)?u:eu,pf=(n===1)?'s':'e';
+  var h='',tot=(n===1)?20:15,arr=(n===1)?u:eu,pf=(n===1)?'s':'e';
   for(var i=1;i<=tot;i++){
-    var op=arr.indexOf(i)>-1,rk=(n===1)?(i<=7?0:(i<=12?1:(i<=17?2:3))):(i<=4?0:(i<=7?1:2));
+    var op=arr.indexOf(i)>-1,rk=(n===1)?(i<=7?0:(i<=12?1:(i<=17?2:3))):((i<=4||i>=11)?0:(i<=7?1:2));
     var nm=rk===0?'Обычный':(rk===1?'Редкий':(rk===2?'Легендарный':'Мифический'));
     h+='<div class="gi '+(op?'':'lk')+'" '+(op?'onclick="big(\''+pf+i+'.jpg\','+rk+',\''+nm+'\')"':'')+'><img src="'+pf+i+'.jpg">'+(op?'':'<div class="qm">?</div>')+'<div class="gt r'+rk+'">'+nm+'</div></div>';
   }
@@ -185,7 +185,7 @@ function mkPrize(){
   }
   var miss=new Array();
   for(var i=1;i<=20;i++)if(u.indexOf(i)<0)miss.push({pf:'s',i:i});
-  if(eun){for(var j=1;j<=10;j++)if(eu.indexOf(j)<0)miss.push({pf:'e',i:j});}
+  if(eun){for(var j=1;j<=15;j++)if(eu.indexOf(j)<0)miss.push({pf:'e',i:j});}
   if(miss.length>0){
     var c=miss[Math.floor(Math.random()*miss.length)];
     return {tp:'c',pf:c.pf,i:c.i};
@@ -319,8 +319,9 @@ function roll(){
     if(u.indexOf(i)<0){u.push(i);localStorage.setItem('u15',JSON.stringify(u));}
   }else{
     pf='e';
-    i=r<.55?Math.floor(Math.random()*4)+1:(r<.87?Math.floor(Math.random()*3)+5:Math.floor(Math.random()*3)+8);
-    rk=i<=4?0:(i<=7?1:2);
+    var ec=new Array(1,2,3,4,11,12,13,14,15);
+    i=r<.55?ec[Math.floor(Math.random()*ec.length)]:(r<.87?Math.floor(Math.random()*3)+5:Math.floor(Math.random()*3)+8);
+    rk=(i<=4||i>=11)?0:(i<=7?1:2);
     if(eu.indexOf(i)<0){eu.push(i);localStorage.setItem('eu9',JSON.stringify(eu));}
   }
   var nm=rk===0?'Обычный':(rk===1?'Редкий':(rk===2?'Легендарный':'Мифический'));
@@ -363,7 +364,7 @@ function roll(){
 <button class="btn b1" onclick="go('v2')">🃏 Открыть карточки</button>
 </div>
 <div id="v2" style="display:none">
-<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/30</button></div>
+<div class="hd"><button class="sm" onclick="go('v4')">← Кликер</button><span class="bal">🪙 <span id="m2">0</span></span><button class="sm" onclick="go('v3')">🗂 <span id="cnt">0</span>/35</button></div>
 <div class="tabs"><button class="tab act" id="rt1" onclick="rtab(1)">🎄 Зимние</button><button class="tab" id="rt2" onclick="rtab(2)">🌌 Космос</button></div>
 <div id="rbox">
 <div class="slot" id="sl"><span style="font-size:44px">🎁</span></div>
@@ -379,7 +380,7 @@ function roll(){
 </div>
 <div id="v3" style="display:none">
 <div class="hd"><button class="sm" onclick="go('v2')">← В игру</button><span style="font-size:13px;font-weight:700;color:#78350f">Коллекция</span></div>
-<div class="tabs"><button class="tab act" id="ct1" onclick="ctab(1)">🎄 Зимние (20)</button><button class="tab" id="ct2" onclick="ctab(2)">🌌 Космос (10)</button></div>
+<div class="tabs"><button class="tab act" id="ct1" onclick="ctab(1)">🎄 Зимние (20)</button><button class="tab" id="ct2" onclick="ctab(2)">🌌 Космос (15)</button></div>
 <div class="grid" id="gr"></div>
 </div>
 <div id="v5" style="display:none;padding:12px 4px">
