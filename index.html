@@ -451,4 +451,28 @@ function roll(){
 <audio id="bg" src="music.mp3" loop></audio>
 <div id="ov" class="ov" onclick="this.style.display='none'"></div>
 </body>
+<script>
+(function() {
+  var lastCatSrc = '';
+  var origRoll = window.roll;
+  window.roll = function() {
+    var oldSrc = lastCatSrc;
+    origRoll();
+    var img = document.querySelector('#sl img');
+    if (img && img.getAttribute('src') === oldSrc) {
+      var tries = 0;
+      var cost = (rt === 1) ? 3 : 50;
+      while (img.getAttribute('src') === oldSrc && tries < 20) {
+        m += cost;
+        var b = document.getElementById('rb');
+        b.disabled = false;
+        origRoll();
+        img = document.querySelector('#sl img');
+        tries++;
+      }
+    }
+    if (img) lastCatSrc = img.getAttribute('src');
+  };
+})();
+</script>
 </html>
