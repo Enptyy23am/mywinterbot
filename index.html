@@ -74,9 +74,9 @@ p{font-size:13px;color:#57534e;margin-bottom:14px;line-height:1.35}
 .cbox.dim{opacity:.55}
 </style>
 <script>
-var k=0,gc=parseInt(localStorage.getItem('gc')||'0'),m=parseInt(localStorage.getItem('m15')||'0'),mx=parseInt(localStorage.getItem('mx15')||m),x2c=parseInt(localStorage.getItem('x2c')||'0'),slv=parseInt(localStorage.getItem('slv')||'0'),xlv=parseInt(localStorage.getItem('xlv')||'0'),alv=parseInt(localStorage.getItem('alv')||'0'),clv=parseInt(localStorage.getItem('clv')||'0'),eun=parseInt(localStorage.getItem('eun')||'0'),snd=localStorage.getItem('snd')!=='0',cur='v1';
+var k=0,gc=parseInt(localStorage.getItem('gc')||'0'),m=parseInt(localStorage.getItem('m15')||'0'),mx=parseInt(localStorage.getItem('mx15')||m),x2c=parseInt(localStorage.getItem('x2c')||'0'),slv=parseInt(localStorage.getItem('slv')||'0'),xlv=parseInt(localStorage.getItem('xlv')||'0'),alv=parseInt(localStorage.getItem('alv')||'0'),clv=parseInt(localStorage.getItem('clv')||'0'),glv=parseInt(localStorage.getItem('glv')||'0'),eun=parseInt(localStorage.getItem('eun')||'0'),snd=localStorage.getItem('snd')!=='0',cur='v1';
 var u=JSON.parse(localStorage.getItem('u15')||'[]'),eu=JSON.parse(localStorage.getItem('eu9')||'[]'),cl=JSON.parse(localStorage.getItem('cl15')||'[]'),cb=0,x2=0,rt=1,ct=1,caid=0,cdone=0,cprizes=new Array(),gtmr=null,lastS=0,lastE=0;
-var PR=new Array(150,500,1000,1500),PR2=new Array(250,700,1000,1500,2500,4000),PRA=new Array(250,700,1000,3000,5500),AINC=new Array(0,1,2,5,7,10),PRC=new Array(500,1000,2000,3000,5500),CINC=new Array(1,2,3,5,7,10);
+var PR=new Array(150,500,1000,1500),PR2=new Array(250,700,1000,1500,2500,4000),PRA=new Array(250,700,1000,3000,5500),AINC=new Array(0,1,2,5,7,10),PRC=new Array(500,1000,2000,3000,5500),CINC=new Array(1,2,3,5,7,10),PRG=new Array(300,800,1800,3500),GINC=new Array(150,250,400,650,1000);
 var AC=[
   {id:1,t:'🐾 Первые лапки',d:'Накопить 100 монет',r:25,ch:0,ok:function(){return mx>=100;}},
   {id:2,t:'💰 Кошачий магнат',d:'Накопить 250 монет',r:0,ch:1,ok:function(){return mx>=250;}},
@@ -258,6 +258,11 @@ function updS(){
   document.getElementById('ccd').innerText=clv<5?('+'+curC+' → +'+nxC+' 🪙 (в ×2: +'+(nxC*2)+')'):'+10 🪙 (в ×2: +20)';
   var cb2=document.getElementById('cbtn');
   if(clv>=5){cb2.disabled=true;cb2.innerText='✅ Максимум';}else{cb2.disabled=false;cb2.innerText='Улучшить за '+PRC[clv]+' 🪙';}
+  var curG=GINC[glv],nxG=glv<4?GINC[glv+1]:1000;
+  document.getElementById('glv').innerText=glv+'/4';
+  document.getElementById('gcd').innerText=glv<4?('+'+curG+' → +'+nxG+' 🪙'):'+1000 🪙 (Максимум)';
+  var gb=document.getElementById('gbtn');
+  if(glv>=4){gb.disabled=true;gb.innerText='✅ Максимум';}else{gb.disabled=false;gb.innerText='Улучшить за '+PRG[glv]+' 🪙';}
   var curA=AINC[alv],nxA=alv<5?AINC[alv+1]:10;
   document.getElementById('alv').innerText=alv+'/5';
   document.getElementById('acd').innerText=alv<5?('+'+curA+' → +'+nxA+' 🪙/сек'):'+10 🪙/сек (Максимум)';
@@ -267,6 +272,7 @@ function updS(){
 function buyS(){if(slv>=4)return;var p=PR[slv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;slv++;localStorage.setItem('slv',slv);updM();updS();document.getElementById('smsg').innerText='⚡ Таймер рулетки ускорен!';}
 function buyX(){if(xlv>=6)return;var p=PR2[xlv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;xlv++;localStorage.setItem('xlv',xlv);updM();updS();document.getElementById('smsg').innerText='🔥 Время режима ×2 увеличено!';}
 function buyC(){if(clv>=5)return;var p=PRC[clv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;clv++;localStorage.setItem('clv',clv);updM();updS();document.getElementById('smsg').innerText='🐾 Сила клика увеличена!';}
+function buyG(){if(glv>=4)return;var p=PRG[glv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;glv++;localStorage.setItem('glv',glv);updM();updS();document.getElementById('smsg').innerText='🎁 Бонус за подарки увеличен!';}
 function buyA(){if(alv>=5)return;var p=PRA[alv];if(m<p){document.getElementById('smsg').innerText='❌ Не хватает монет! Нужно '+p+' 🪙';return;}m-=p;alv++;localStorage.setItem('alv',alv);updM();updS();document.getElementById('smsg').innerText='💤 Сонный помощник прокачан!';}
 function claim(id,r){if(cl.indexOf(id)>-1)return;cl.push(id);localStorage.setItem('cl15',JSON.stringify(cl));m+=r;updM();go('v6');}
 function big(src,rk,nm){var o=document.getElementById('ov');o.innerHTML='<img src="'+src+'"><div class="tag r'+rk+'" style="position:static;margin-top:14px;font-size:14px;padding:6px 16px">'+nm+'</div><p style="color:#fde68a;margin-top:12px">Нажми в любое место, чтобы закрыть</p>';o.style.display='flex';}
@@ -297,11 +303,12 @@ function takeGift(e){
   e.stopPropagation();
   var g=document.getElementById('gft');if(!g||g.style.display==='none')return;
   g.style.display='none';clearTimeout(gtmr);
-  gc++;localStorage.setItem('gc',gc);m+=150;updM();
+  var bonus=GINC[glv];
+  gc++;localStorage.setItem('gc',gc);m+=bonus;updM();
   if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.HapticFeedback)Telegram.WebApp.HapticFeedback.notificationOccurred('success');
   var r=g.getBoundingClientRect();
   var x=(e&&e.clientX)?e.clientX:(r.left+r.width/2),y=(e&&e.clientY)?e.clientY:(r.top+r.height/2);
-  showPop('🎁 +150 🪙',x,y);
+  showPop('🎁 +'+bonus+' 🪙',x,y);
 }
 setInterval(spawnGift,30000);
 setInterval(function(){if(alv>0){m+=AINC[alv];updM();}},1000);
@@ -310,7 +317,7 @@ setInterval(function(){
   else{if(cb>0)cb=Math.max(0,cb-2);if(document.getElementById('cbt'))document.getElementById('cbt').innerText=cb>0?'Комбо: '+cb+'%':'Кликай быстро для ×2!';}
   if(document.getElementById('cbf'))document.getElementById('cbf').style.width=cb+'%';
 },100);
-function wipe(){gc=0;localStorage.setItem('gc','0');m=0;mx=0;x2c=0;slv=0;xlv=0;alv=0;clv=0;eun=0;lastS=0;lastE=0;u=[];eu=[];cl=[];localStorage.setItem('m15','0');localStorage.setItem('mx15','0');localStorage.setItem('x2c','0');localStorage.setItem('slv','0');localStorage.setItem('xlv','0');localStorage.setItem('alv','0');localStorage.setItem('clv','0');localStorage.setItem('eun','0');localStorage.setItem('u15','[]');localStorage.setItem('eu9','[]');localStorage.setItem('cl15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';rt=1;ct=1;go('v4');}
+function wipe(){gc=0;localStorage.setItem('gc','0');m=0;mx=0;x2c=0;slv=0;xlv=0;alv=0;clv=0;glv=0;eun=0;lastS=0;lastE=0;u=[];eu=[];cl=[];localStorage.setItem('m15','0');localStorage.setItem('mx15','0');localStorage.setItem('x2c','0');localStorage.setItem('slv','0');localStorage.setItem('xlv','0');localStorage.setItem('alv','0');localStorage.setItem('clv','0');localStorage.setItem('glv','0');localStorage.setItem('eun','0');localStorage.setItem('u15','[]');localStorage.setItem('eu9','[]');localStorage.setItem('cl15','[]');document.getElementById('sl').innerHTML='<span style="font-size:44px">🎁</span>';document.getElementById('mr').innerText='✨ Прогресс сброшен!';rt=1;ct=1;go('v4');}
 function roll(){
   var b=document.getElementById('rb');if(b.disabled)return;
   var cost=(rt===1)?3:50;
@@ -343,6 +350,10 @@ function roll(){
   document.getElementById('sl').innerHTML='<img src="'+pf+i+'.jpg"><div class="tag r'+rk+'">'+nm+'</div>';
   b.disabled=true;var t=Math.round((3-slv*0.5)*10);
   b.innerText='⏳ Подождите '+(t/10).toFixed(1)+'с...';
+  var iv=setInterval(function(){t--;if(t>0){b.innerText='⏳ Подождите '+(t/10).toFixed(1)+'с...';}else{clearInterval(iv);b.disabled=false;b.innerText=(rt===1?'🃏 Открыть за 3 🪙':'🌌 Открыть за 50 🪙');}},100);
+}
+</script>
+</head>
 <body onload="updM();if(window.Telegram&&Telegram.WebApp){Telegram.WebApp.ready();Telegram.WebApp.expand();}setInterval(function(){var n=new Date(),y=new Date(n.getFullYear()+1,0,1),d=y-n;document.getElementById('cd').innerText=Math.floor(d/864e5)+'д '+Math.floor(d/36e5%24)+'ч '+Math.floor(d/6e4%60)+'м '+Math.floor(d/1e3%60)+'с';},500)">
 <button class="shpb" id="shpb" onclick="go('v7')">🏪 Магазин</button>
 <button class="achb" id="achb" onclick="go('v6')">🏆 <span id="acnt">0</span>/14<span class="dot" id="adot">!</span></button>
@@ -414,6 +425,12 @@ function roll(){
 <div class="at2">Увеличивает монеты за клик (в режиме ×2 удваивается).</div>
 <div style="font-size:12px;font-weight:700;color:#b45309">За клик: <span id="ccd">+1 → +2 🪙 (в ×2: +4)</span></div>
 <button class="btn b1" style="margin:0;padding:9px" id="cbtn" onclick="buyC()">Улучшить за 500 🪙</button>
+</div>
+<div class="ait dn" style="flex-direction:column;align-items:stretch;gap:6px;padding:11px">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">🎁 Щедрый Санта</span><span class="bal" id="glv">0/4</span></div>
+<div class="at2">Увеличивает награду за пойманный подарок возле кота.</div>
+<div style="font-size:12px;font-weight:700;color:#b45309">За подарок: <span id="gcd">+150 → +250 🪙</span></div>
+<button class="btn b1" style="margin:0;padding:9px" id="gbtn" onclick="buyG()">Улучшить за 300 🪙</button>
 </div>
 <div class="ait dn" style="flex-direction:column;align-items:stretch;gap:6px;padding:11px">
 <div style="display:flex;justify-content:space-between;align-items:center"><span class="at1">⏱ Быстрая рулетка</span><span class="bal" id="slv">0/4</span></div>
